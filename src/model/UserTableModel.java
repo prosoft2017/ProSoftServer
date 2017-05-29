@@ -17,7 +17,7 @@ import javax.swing.table.AbstractTableModel;
 public class UserTableModel extends AbstractTableModel {
 
     private final String[] columns = new String[]{"Firstname", "Lastname", "Username", "Email", "Status", "Baned"};
-    private final List<AppUser> listOfUsers;
+    private List<AppUser> listOfUsers;
 
     public UserTableModel(List<AppUser> listOfUsers) {
         if (listOfUsers == null) {
@@ -74,6 +74,11 @@ public class UserTableModel extends AbstractTableModel {
 
     public AppUser getUserAt(int selectedIndex) {
         return listOfUsers.get(selectedIndex);
+    }
+
+    public void setListOfUsers(List<AppUser> listOfUsers) {
+        this.listOfUsers = listOfUsers;
+        fireTableDataChanged();
     }
 
 }

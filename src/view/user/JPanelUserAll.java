@@ -5,14 +5,18 @@
  */
 package view.user;
 
+import constant.Constant;
 import controller.Controller;
 import domain.AppUser;
+import domain.PaginationOption;
 import domain.UserCRUDType;
 import java.awt.Dialog;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.control.Pagination;
+import javax.swing.JColorChooser;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -23,6 +27,10 @@ import model.UserTableModel;
  * @author Filip
  */
 public class JPanelUserAll extends javax.swing.JPanel {
+
+    private int page = 1;
+    private int offset = 10;
+    private int maxPages = 5;
 
     /**
      * Creates new form JPanelUserAll
@@ -62,6 +70,31 @@ public class JPanelUserAll extends javax.swing.JPanel {
         jSeparator3 = new javax.swing.JSeparator();
         jLabel4 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        jTextField4 = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        jTextField5 = new javax.swing.JTextField();
+        jSeparator4 = new javax.swing.JSeparator();
+        jLabel8 = new javax.swing.JLabel();
+        jCheckBox4 = new javax.swing.JCheckBox();
+        jCheckBox5 = new javax.swing.JCheckBox();
+        jCheckBox6 = new javax.swing.JCheckBox();
+        jCheckBox7 = new javax.swing.JCheckBox();
+        jSeparator5 = new javax.swing.JSeparator();
+        jLabel9 = new javax.swing.JLabel();
+        jButton9 = new javax.swing.JButton();
+        jButton10 = new javax.swing.JButton();
+        jButton11 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
+        jPanel5 = new javax.swing.JPanel();
+        jButtonFirstPage = new javax.swing.JButton();
+        jButtonPreviousPage = new javax.swing.JButton();
+        jTextFieldCurrentPage = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        jTextFieldMaxPage = new javax.swing.JTextField();
+        jButtonNextPage = new javax.swing.JButton();
+        jButtonLastPage = new javax.swing.JButton();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder("List of All Users"));
         setMaximumSize(new java.awt.Dimension(958, 684));
@@ -81,6 +114,11 @@ public class JPanelUserAll extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Options"));
@@ -174,7 +212,7 @@ public class JPanelUserAll extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
-                    .addComponent(jComboBox1, 0, 179, Short.MAX_VALUE))
+                    .addComponent(jComboBox1, 0, 232, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -228,22 +266,188 @@ public class JPanelUserAll extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
+        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Advanced Search "));
+
+        jLabel6.setText("Activate user");
+
+        jLabel7.setText("-");
+
+        jSeparator4.setOrientation(javax.swing.SwingConstants.VERTICAL);
+
+        jLabel8.setText("User Status");
+
+        jCheckBox4.setText("Activate");
+
+        jCheckBox5.setText("Locked");
+
+        jCheckBox6.setText("Pending");
+
+        jCheckBox7.setText("Baned");
+
+        jSeparator5.setOrientation(javax.swing.SwingConstants.VERTICAL);
+
+        jLabel9.setText("Advanced Filters");
+
+        jButton9.setText("Sponzor");
+
+        jButton10.setText("Menadzer");
+
+        jButton11.setText("Treci Ludak");
+
+        jButton5.setText("Reset All Filters");
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel6)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel8)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jCheckBox4)
+                        .addGap(42, 42, 42)
+                        .addComponent(jCheckBox7))
+                    .addComponent(jCheckBox5)
+                    .addComponent(jCheckBox6))
+                .addGap(18, 18, 18)
+                .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel9)
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addComponent(jButton9)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton10)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton11)))
+                        .addContainerGap(278, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel9)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton9)
+                    .addComponent(jButton10)
+                    .addComponent(jButton11))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton5))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jSeparator4)
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel4Layout.createSequentialGroup()
+                                        .addComponent(jLabel6)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel7)
+                                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(jPanel4Layout.createSequentialGroup()
+                                        .addComponent(jLabel8)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(jCheckBox4)
+                                            .addComponent(jCheckBox7))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jCheckBox5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jCheckBox6)
+                                .addGap(0, 39, Short.MAX_VALUE))))
+                    .addComponent(jSeparator5, javax.swing.GroupLayout.Alignment.LEADING))
+                .addContainerGap())
+        );
+
+        jButtonFirstPage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resource/image/levo-dupla.png"))); // NOI18N
+        jButtonFirstPage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonFirstPageActionPerformed(evt);
+            }
+        });
+        jPanel5.add(jButtonFirstPage);
+
+        jButtonPreviousPage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resource/image/levo-jedna.png"))); // NOI18N
+        jButtonPreviousPage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonPreviousPageActionPerformed(evt);
+            }
+        });
+        jPanel5.add(jButtonPreviousPage);
+
+        jTextFieldCurrentPage.setMaximumSize(new java.awt.Dimension(30, 25));
+        jTextFieldCurrentPage.setMinimumSize(new java.awt.Dimension(30, 25));
+        jTextFieldCurrentPage.setPreferredSize(new java.awt.Dimension(30, 25));
+        jPanel5.add(jTextFieldCurrentPage);
+
+        jLabel5.setText(" - ");
+        jPanel5.add(jLabel5);
+
+        jTextFieldMaxPage.setEditable(false);
+        jTextFieldMaxPage.setMaximumSize(new java.awt.Dimension(30, 25));
+        jTextFieldMaxPage.setMinimumSize(new java.awt.Dimension(30, 25));
+        jTextFieldMaxPage.setPreferredSize(new java.awt.Dimension(30, 25));
+        jPanel5.add(jTextFieldMaxPage);
+
+        jButtonNextPage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resource/image/desno-jedna.png"))); // NOI18N
+        jButtonNextPage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonNextPageActionPerformed(evt);
+            }
+        });
+        jPanel5.add(jButtonNextPage);
+
+        jButtonLastPage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resource/image/desno-dupla.png"))); // NOI18N
+        jButtonLastPage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonLastPageActionPerformed(evt);
+            }
+        });
+        jPanel5.add(jButtonLastPage);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jSeparator1)
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1)
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jTextField1)
                         .addGap(18, 18, 18)
                         .addComponent(jButton1))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -257,9 +461,13 @@ public class JPanelUserAll extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 414, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -308,39 +516,155 @@ public class JPanelUserAll extends javax.swing.JPanel {
         dialog.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        if (evt.getClickCount() == 2) {
+            int selectedIndex = jTable1.getSelectedRow();
+            if (selectedIndex < 0) {
+                JOptionPane.showMessageDialog(null, "Please select user to edit!", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            JDialog dialog = new JDialog(null, "User Details", Dialog.ModalityType.APPLICATION_MODAL);
+            JPanel panel = new JPanelUserCRUD(((UserTableModel) jTable1.getModel()).getUserAt(selectedIndex), UserCRUDType.View);
+            dialog.add(panel);
+            dialog.setResizable(false);
+            dialog.setLocationRelativeTo(this);
+            dialog.pack();
+            dialog.setVisible(true);
+        }
+    }//GEN-LAST:event_jTable1MouseClicked
+
+    private void jButtonLastPageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLastPageActionPerformed
+        changePaginationPage(PaginationOption.LastPage);
+    }//GEN-LAST:event_jButtonLastPageActionPerformed
+
+    private void jButtonNextPageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNextPageActionPerformed
+        changePaginationPage(PaginationOption.NextPage);
+    }//GEN-LAST:event_jButtonNextPageActionPerformed
+
+    private void jButtonPreviousPageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPreviousPageActionPerformed
+        changePaginationPage(PaginationOption.PreviousPage);
+    }//GEN-LAST:event_jButtonPreviousPageActionPerformed
+
+    private void jButtonFirstPageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFirstPageActionPerformed
+        changePaginationPage(PaginationOption.FirstPage);
+    }//GEN-LAST:event_jButtonFirstPageActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton10;
+    private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton9;
+    private javax.swing.JButton jButtonFirstPage;
+    private javax.swing.JButton jButtonLastPage;
+    private javax.swing.JButton jButtonNextPage;
+    private javax.swing.JButton jButtonPreviousPage;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JCheckBox jCheckBox3;
+    private javax.swing.JCheckBox jCheckBox4;
+    private javax.swing.JCheckBox jCheckBox5;
+    private javax.swing.JCheckBox jCheckBox6;
+    private javax.swing.JCheckBox jCheckBox7;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JSeparator jSeparator4;
+    private javax.swing.JSeparator jSeparator5;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField4;
+    private javax.swing.JTextField jTextField5;
+    private javax.swing.JTextField jTextFieldCurrentPage;
+    private javax.swing.JTextField jTextFieldMaxPage;
     // End of variables declaration//GEN-END:variables
 
     private void initCustomComponents() {
         List<AppUser> userList = null;
         try {
-            userList = Controller.getController().getAllUsersFromDB();
+            userList = Controller.getController().getAllUsersFromDB(page, offset, userList);
         } catch (Exception ex) {
+            System.out.println(ex.getMessage());
             JOptionPane.showMessageDialog(null, "System Error. Please contact your administator at \"Help Section\"\n" + ex.getMessage(), "System Error", JOptionPane.ERROR_MESSAGE);
         }
         jTable1.setModel(new UserTableModel(userList));
+
+        jTextFieldMaxPage.setText("" + maxPages);
+        jTextFieldCurrentPage.setText("" + page);
+
+    }
+
+    private void changePaginationPage(PaginationOption operation) {
+        int currentPage;
+
+        try {
+            currentPage = Integer.parseInt(jTextFieldCurrentPage.getText());
+        } catch (NumberFormatException exception) {
+            jTextFieldCurrentPage.setText("" + page);
+            return;
+        }
+
+        if (currentPage < 1 || currentPage > maxPages) {
+            jTextFieldCurrentPage.setText("" + page);
+            return;
+        }
+
+        switch (operation) {
+            case FirstPage:
+                currentPage = 1;
+                break;
+            case PreviousPage:
+                currentPage = page == 1 ? 1 : page - 1;
+                break;
+            case NextPage:
+                currentPage = page == maxPages ? maxPages : page + 1;
+                break;
+            case LastPage:
+                currentPage = maxPages;
+                break;
+        }
+
+        if (page == currentPage) {
+            return;
+        }
+
+        page = currentPage;
+
+        List<AppUser> userList;
+
+        try {
+            userList = Controller.getController().getAllUsersFromDB(page, offset, new ArrayList());
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            JOptionPane.showMessageDialog(null, Constant.SYSTEM_ERROR_MSG, "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        UserTableModel tableModel = (UserTableModel) jTable1.getModel();
+        tableModel.setListOfUsers(userList);
+
+        jTextFieldCurrentPage.setText("" + page);
     }
 
 }

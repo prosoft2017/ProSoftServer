@@ -13,8 +13,10 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
@@ -66,7 +68,7 @@ public class JPanelUserCRUD extends javax.swing.JPanel {
         jSeparator2 = new javax.swing.JSeparator();
         jTextFieldImagePath = new javax.swing.JTextField();
         jButtonSelectImage = new javax.swing.JButton();
-        jButtonSaveUser = new javax.swing.JButton();
+        jButtonNextStep = new javax.swing.JButton();
         jButtonCancel = new javax.swing.JButton();
         jPasswordField = new javax.swing.JPasswordField();
         jPasswordFieldRepeat = new javax.swing.JPasswordField();
@@ -76,6 +78,8 @@ public class JPanelUserCRUD extends javax.swing.JPanel {
         EmailFieldErrorLabel = new javax.swing.JLabel();
         PasswordFieldErrorLabel = new javax.swing.JLabel();
         PasswordRepeatFieldErrorLabel = new javax.swing.JLabel();
+        jButtonSave = new javax.swing.JButton();
+        jButtonBack = new javax.swing.JButton();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder("Border Title Add/Edit/Read"));
 
@@ -125,14 +129,20 @@ public class JPanelUserCRUD extends javax.swing.JPanel {
 
         jButtonSelectImage.setText("Select Image");
 
-        jButtonSaveUser.setText("Save User");
-        jButtonSaveUser.addActionListener(new java.awt.event.ActionListener() {
+        jButtonNextStep.setText("Next Step");
+        jButtonNextStep.setMaximumSize(new java.awt.Dimension(100, 25));
+        jButtonNextStep.setMinimumSize(new java.awt.Dimension(100, 25));
+        jButtonNextStep.setPreferredSize(new java.awt.Dimension(100, 25));
+        jButtonNextStep.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonSaveUserActionPerformed(evt);
+                jButtonNextStepActionPerformed(evt);
             }
         });
 
         jButtonCancel.setText("Cancel");
+        jButtonCancel.setMaximumSize(new java.awt.Dimension(100, 25));
+        jButtonCancel.setMinimumSize(new java.awt.Dimension(100, 25));
+        jButtonCancel.setPreferredSize(new java.awt.Dimension(100, 25));
         jButtonCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonCancelActionPerformed(evt);
@@ -154,6 +164,18 @@ public class JPanelUserCRUD extends javax.swing.JPanel {
         });
 
         UsernameFieldErrorLabel.setText(" ");
+
+        jButtonSave.setText("Save User");
+        jButtonSave.setEnabled(false);
+        jButtonSave.setMaximumSize(new java.awt.Dimension(100, 25));
+        jButtonSave.setMinimumSize(new java.awt.Dimension(100, 25));
+        jButtonSave.setPreferredSize(new java.awt.Dimension(100, 25));
+
+        jButtonBack.setText("Back");
+        jButtonBack.setEnabled(false);
+        jButtonBack.setMaximumSize(new java.awt.Dimension(100, 25));
+        jButtonBack.setMinimumSize(new java.awt.Dimension(100, 25));
+        jButtonBack.setPreferredSize(new java.awt.Dimension(100, 25));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -199,12 +221,16 @@ public class JPanelUserCRUD extends javax.swing.JPanel {
                             .addComponent(UsernameFieldErrorLabel, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(LastnameFieldErrorLabel, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(FirstNameFieldErrorLabel, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jButtonCancel)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButtonSaveUser))
                             .addComponent(PasswordFieldErrorLabel, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(PasswordRepeatFieldErrorLabel, javax.swing.GroupLayout.Alignment.TRAILING))))
+                            .addComponent(PasswordRepeatFieldErrorLabel, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jButtonCancel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButtonBack, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButtonNextStep, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButtonSave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -255,8 +281,10 @@ public class JPanelUserCRUD extends javax.swing.JPanel {
                     .addComponent(jButtonSelectImage))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 150, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonSaveUser)
-                    .addComponent(jButtonCancel))
+                    .addComponent(jButtonNextStep, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonCancel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonSave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonBack, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -265,7 +293,7 @@ public class JPanelUserCRUD extends javax.swing.JPanel {
         SwingUtilities.getWindowAncestor(this).setVisible(false);
     }//GEN-LAST:event_jButtonCancelActionPerformed
 
-    private void jButtonSaveUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSaveUserActionPerformed
+    private void jButtonNextStepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNextStepActionPerformed
         formSubmitetedOnce = true;
         boolean formValid;
         try {
@@ -287,24 +315,32 @@ public class JPanelUserCRUD extends javax.swing.JPanel {
         appUser.setEmail(jTextFieldEmail.getText().trim());
         appUser.setPassword(jPasswordField.getText().trim());
         appUser.setImagePath(jTextFieldImagePath.getText().trim());
+        
+        JPanel panel = new JPanelUserAddressCRUD(appUser, cRUDType);
+        JDialog dialog  = (JDialog) SwingUtilities.getWindowAncestor(this);
+        dialog.remove(this);
+        dialog.add(panel);
+        dialog.invalidate();
+        dialog.validate();
+        dialog.repaint();
 
-        switch (cRUDType) {
-            case Add:
-            case Edit: {
-                try {
-                    Controller.getController().saveAppUser(appUser);
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, "System Error. " + ex.getMessage(), "System Error", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-            }
-            break;
-            default:
-                JOptionPane.showMessageDialog(null, "System Error. This shouldnt have hapend", "System Error", JOptionPane.ERROR_MESSAGE);
-        }
-
-        JOptionPane.showMessageDialog(null, "User saved successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
-    }//GEN-LAST:event_jButtonSaveUserActionPerformed
+//        switch (cRUDType) {
+//            case Add:
+//            case Edit: {
+//                try {
+//                    Controller.getController().saveAppUser(appUser);
+//                } catch (Exception ex) {
+//                    JOptionPane.showMessageDialog(null, "System Error. " + ex.getMessage(), "System Error", JOptionPane.ERROR_MESSAGE);
+//                    return;
+//                }
+//            }
+//            break;
+//            default:
+//                JOptionPane.showMessageDialog(null, "System Error. This shouldnt have hapend", "System Error", JOptionPane.ERROR_MESSAGE);
+//        }
+//
+//        JOptionPane.showMessageDialog(null, "User saved successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_jButtonNextStepActionPerformed
 
     private void jTextFieldFirstnameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldFirstnameKeyReleased
         if (formSubmitetedOnce) {
@@ -350,8 +386,10 @@ public class JPanelUserCRUD extends javax.swing.JPanel {
     private javax.swing.JLabel PasswordFieldErrorLabel;
     private javax.swing.JLabel PasswordRepeatFieldErrorLabel;
     private javax.swing.JLabel UsernameFieldErrorLabel;
+    private javax.swing.JButton jButtonBack;
     private javax.swing.JButton jButtonCancel;
-    private javax.swing.JButton jButtonSaveUser;
+    private javax.swing.JButton jButtonNextStep;
+    private javax.swing.JButton jButtonSave;
     private javax.swing.JButton jButtonSelectImage;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -495,7 +533,7 @@ public class JPanelUserCRUD extends javax.swing.JPanel {
             case Add:
                 break;
             case View:
-                jButtonSaveUser.setEnabled(false);
+                jButtonNextStep.setEnabled(false);
                 Arrays.asList(jTextFieldFirstname, jTextFieldLastname, jTextFieldUsername, jTextFieldEmail, jTextFieldImagePath, jPasswordField, jPasswordFieldRepeat)
                         .stream()
                         .forEach((field) -> field.setEditable(false));
