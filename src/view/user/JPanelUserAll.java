@@ -477,8 +477,8 @@ public class JPanelUserAll extends javax.swing.JPanel {
         JPanel panel = new JPanelBanConfirmation();
         dialog.add(panel);
         dialog.setResizable(false);
-        dialog.setLocationRelativeTo(this);
         dialog.pack();
+        dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -494,8 +494,8 @@ public class JPanelUserAll extends javax.swing.JPanel {
         JPanel panel = new JPanelUserCRUD(((UserTableModel) jTable1.getModel()).getUserAt(selectedIndex), UserCRUDType.View);
         dialog.add(panel);
         dialog.setResizable(false);
-        dialog.setLocationRelativeTo(this);
         dialog.pack();
+        dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
     }//GEN-LAST:event_jButton4ActionPerformed
 
@@ -511,8 +511,8 @@ public class JPanelUserAll extends javax.swing.JPanel {
         JPanel panel = new JPanelUserCRUD(((UserTableModel) jTable1.getModel()).getUserAt(selectedIndex), UserCRUDType.Edit);
         dialog.add(panel);
         dialog.setResizable(false);
-        dialog.setLocationRelativeTo(this);
         dialog.pack();
+        dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -528,8 +528,8 @@ public class JPanelUserAll extends javax.swing.JPanel {
             JPanel panel = new JPanelUserCRUD(((UserTableModel) jTable1.getModel()).getUserAt(selectedIndex), UserCRUDType.View);
             dialog.add(panel);
             dialog.setResizable(false);
-            dialog.setLocationRelativeTo(this);
             dialog.pack();
+            dialog.setLocationRelativeTo(this);
             dialog.setVisible(true);
         }
     }//GEN-LAST:event_jTable1MouseClicked

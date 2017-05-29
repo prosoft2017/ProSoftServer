@@ -488,8 +488,8 @@ public class JFrameStart extends javax.swing.JFrame {
         JPanelUserCRUD panel = new JPanelUserCRUD(null, UserCRUDType.Add);
         dialog.add(panel);
         dialog.setResizable(false);
-        dialog.setLocationRelativeTo(null);
         dialog.pack();
+        dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
@@ -497,8 +497,8 @@ public class JFrameStart extends javax.swing.JFrame {
         JDialog dialog = new JDialog(this, "All Users", Dialog.ModalityType.MODELESS);
         JPanel panel = new JPanelUserAll();
         dialog.add(panel);
-        dialog.setLocationRelativeTo(null);
         dialog.pack();
+        dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
@@ -507,8 +507,8 @@ public class JFrameStart extends javax.swing.JFrame {
         JPanelBanUser panel = new JPanelBanUser();
         dialog.add(panel);
         dialog.setResizable(false);
-        dialog.setLocationRelativeTo(null);
         dialog.pack();
+        dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 

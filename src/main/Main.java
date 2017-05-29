@@ -5,6 +5,9 @@
  */
 package main;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import view.JFrameStart;
 
 /**
@@ -43,5 +46,11 @@ public class Main {
             jfs.setTitle("Server Started...");
             jfs.setVisible(true);
         });
+        
+//        try {
+//            new communication.Communication().startServer();
+//        } catch (IOException | ClassNotFoundException ex) {
+//            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
 }

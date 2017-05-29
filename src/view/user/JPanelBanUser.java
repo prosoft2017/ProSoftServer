@@ -108,8 +108,8 @@ public class JPanelBanUser extends javax.swing.JPanel {
         JPanel panel = new JPanelBanConfirmation();
         dialog.add(panel);
         dialog.setResizable(false);
-        dialog.setLocationRelativeTo(this);
         dialog.pack();
+        dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
