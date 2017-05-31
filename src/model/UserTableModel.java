@@ -6,6 +6,8 @@
 package model;
 
 import domain.AppUser;
+import domain.StatusType;
+import filter.user.UserFilter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
@@ -17,13 +19,19 @@ import javax.swing.table.AbstractTableModel;
 public class UserTableModel extends AbstractTableModel {
 
     private final String[] columns = new String[]{"Firstname", "Lastname", "Username", "Email", "Status", "Baned"};
+    private final List<AppUser> initialUserList;
+    private List<AppUser> filteredListOfUsers;
     private List<AppUser> listOfUsers;
+    private UserFilter filter;
 
-    public UserTableModel(List<AppUser> listOfUsers) {
+    public UserTableModel(List<AppUser> listOfUsers, int offset) {
         if (listOfUsers == null) {
             listOfUsers = new ArrayList<>();
         }
-        this.listOfUsers = listOfUsers;
+        this.initialUserList = listOfUsers;
+        this.filteredListOfUsers = listOfUsers;
+        this.listOfUsers = filteredListOfUsers.subList(0, (filteredListOfUsers.size() > offset ? offset : filteredListOfUsers.size()));
+        filter = new UserFilter();
     }
 
     @Override
@@ -76,9 +84,54 @@ public class UserTableModel extends AbstractTableModel {
         return listOfUsers.get(selectedIndex);
     }
 
-    public void setListOfUsers(List<AppUser> listOfUsers) {
-        this.listOfUsers = listOfUsers;
+    public int filterByHint(String hint, int offset) {
+        filter.setSearchString(hint);
+        
+        return doAllFilters(offset);
+    }
+
+    public void changePage(int page, int offset) {
+        this.listOfUsers = filteredListOfUsers.subList((page - 1) * offset, filteredListOfUsers.size() > page * offset ? page * offset : filteredListOfUsers.size());
         fireTableDataChanged();
+    }
+
+    public int resetAllFilters(int offset) {
+        filter.resetAllFilters();
+        filteredListOfUsers = initialUserList;
+        changePage(1, offset);
+
+        return (int) Math.ceil(filteredListOfUsers.size() / (double) (offset));
+    }
+
+    public int addStatusFilter(StatusType statusType, int offset) {
+        filter.addStatusType(statusType);
+
+        return doAllFilters(offset);
+    }
+
+    public int removeStatusFilter(StatusType statusType, int offset) {
+        filter.removeStatusType(statusType);
+
+        return doAllFilters(offset);
+    }
+
+    public int addBanedFilter(boolean selected, int offset) {
+        filter.setBanned(selected);
+
+        return doAllFilters(offset);
+    }
+
+    private int doAllFilters(int offset) {
+        filteredListOfUsers = new ArrayList<>();
+        initialUserList.stream()
+                .forEach(user -> {
+                    if (filter.doFiltration(user)) {
+                        filteredListOfUsers.add(user);
+                    }
+                });
+        changePage(1, offset);
+
+        return (int) Math.ceil(filteredListOfUsers.size() / (double) (offset));
     }
 
 }

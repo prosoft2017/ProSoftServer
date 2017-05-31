@@ -6,6 +6,7 @@
 package view.user;
 
 import controller.Controller;
+import controller.UserBackendController;
 import domain.Address;
 import domain.AppUser;
 import domain.Country;
@@ -288,7 +289,7 @@ public class JPanelUserAddressCRUD extends javax.swing.JPanel {
             case Add:
             case Edit: {
                 try {
-                    Controller.getController().saveAppUser(appUser);
+                    UserBackendController.getController().saveAppUser(appUser);
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null, "System Error. " + ex.getMessage(), "System Error", JOptionPane.ERROR_MESSAGE);
                     return;
