@@ -7,10 +7,15 @@ package view.user.task;
 
 import domain.AppUser;
 import domain.Task;
+import domain.TaskStatus;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import model.TaskTableModel;
 
 /**
@@ -19,7 +24,7 @@ import model.TaskTableModel;
  */
 public class JPanelAddTask extends javax.swing.JPanel {
 
-    private final AppUser appUser;
+    private AppUser appUser;
 
     /**
      * Creates new form JPanelAddTask
@@ -54,11 +59,13 @@ public class JPanelAddTask extends javax.swing.JPanel {
         jLabel5 = new javax.swing.JLabel();
         jTextFieldEndDate = new javax.swing.JTextField();
         jComboBox1 = new javax.swing.JComboBox<>();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jButtonEditTask = new javax.swing.JButton();
-        jButtonRemoveTask = new javax.swing.JButton();
+        jButtonCloseTask = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Add new task"));
@@ -79,42 +86,65 @@ public class JPanelAddTask extends javax.swing.JPanel {
 
         jLabel5.setText("End Date");
 
+        jButton2.setText("Add Task");
+        jButton2.setMaximumSize(new java.awt.Dimension(91, 23));
+        jButton2.setMinimumSize(new java.awt.Dimension(91, 23));
+        jButton2.setPreferredSize(new java.awt.Dimension(91, 23));
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jButton3.setText("Reset Fields");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
                             .addComponent(jLabel2))
-                        .addGap(36, 36, 36)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(42, 42, 42)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jTextFieldTaskTitle)
-                            .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(jComboBox1, 0, 166, Short.MAX_VALUE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(46, 46, 46)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel5))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTextFieldStartDate)
-                    .addComponent(jTextFieldEndDate, javax.swing.GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE))
-                .addContainerGap(124, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jButton3)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel5))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jTextFieldStartDate)
+                            .addComponent(jTextFieldEndDate, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
@@ -122,21 +152,24 @@ public class JPanelAddTask extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel5)
-                            .addComponent(jTextFieldEndDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel1)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel2)
-                                .addComponent(jTextFieldTaskTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGap(14, 14, 14)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel3)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addComponent(jSeparator1)))
+                            .addComponent(jTextFieldEndDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton3)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(jTextFieldTaskTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(14, 14, 14)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap(22, Short.MAX_VALUE))
         );
 
@@ -160,15 +193,25 @@ public class JPanelAddTask extends javax.swing.JPanel {
         jButtonEditTask.setMinimumSize(new java.awt.Dimension(100, 25));
         jButtonEditTask.setPreferredSize(new java.awt.Dimension(100, 25));
 
-        jButtonRemoveTask.setText("Remove Task");
-        jButtonRemoveTask.setMaximumSize(new java.awt.Dimension(100, 25));
-        jButtonRemoveTask.setMinimumSize(new java.awt.Dimension(100, 25));
-        jButtonRemoveTask.setPreferredSize(new java.awt.Dimension(100, 25));
+        jButtonCloseTask.setText("Close Task");
+        jButtonCloseTask.setMaximumSize(new java.awt.Dimension(100, 25));
+        jButtonCloseTask.setMinimumSize(new java.awt.Dimension(100, 25));
+        jButtonCloseTask.setPreferredSize(new java.awt.Dimension(100, 25));
+        jButtonCloseTask.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCloseTaskActionPerformed(evt);
+            }
+        });
 
         jButton1.setText("Exit");
         jButton1.setMaximumSize(new java.awt.Dimension(100, 25));
         jButton1.setMinimumSize(new java.awt.Dimension(100, 25));
         jButton1.setPreferredSize(new java.awt.Dimension(100, 25));
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -180,7 +223,7 @@ public class JPanelAddTask extends javax.swing.JPanel {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButtonRemoveTask, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButtonCloseTask, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jButtonEditTask, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 586, Short.MAX_VALUE))
@@ -194,7 +237,7 @@ public class JPanelAddTask extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonEditTask, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonRemoveTask, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonCloseTask, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
@@ -221,11 +264,85 @@ public class JPanelAddTask extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        resetAllFormFields();
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        if (appUser == null) {
+            appUser = (AppUser) jComboBox1.getSelectedItem();
+        }
+        String taskTitle = jTextFieldTaskTitle.getText().trim();
+        String taskDescription = jTextAreaTaskDescription.getText().trim();
+        String startDateString = jTextFieldStartDate.getText().trim();
+        String endDateString = jTextFieldEndDate.getText().trim();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        LocalDate startDate;
+        LocalDate endDate;
+
+        try {
+            startDate = LocalDate.parse(startDateString, formatter);
+            endDate = LocalDate.parse(endDateString, formatter);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Please provide correct start and end date for user task!!", constant.ConstantMessages.ERROR_MSG_TITLE, JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (validateEmptyTaskField(taskTitle, taskDescription)) {
+            Task userTask = new Task()
+                    .setTitle(taskTitle)
+                    .setDescription(taskDescription)
+                    .setStartDate(startDate)
+                    .setEndDate(endDate)
+                    .setAppUser(appUser)
+                    .setTaskStatus(TaskStatus.Active);
+
+            try {
+                controller.UserBackendController.getController().saveUserTask(userTask);
+
+                TaskTableModel tableModel = (TaskTableModel) jTable1.getModel();
+                tableModel.addNewTask(userTask);
+                resetAllFormFields();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage(), constant.ConstantMessages.ERROR_MSG_TITLE, JOptionPane.ERROR_MESSAGE);
+            }
+
+        }
+
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButtonCloseTaskActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCloseTaskActionPerformed
+        int selectedIndex = jTable1.getSelectedRow();
+
+        if (selectedIndex == -1) {
+            JOptionPane.showMessageDialog(null, "Please selecte a task you wish to close!!", constant.ConstantMessages.ERROR_MSG_TITLE, JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        TaskTableModel tableModel = (TaskTableModel) jTable1.getModel();
+        Task task = tableModel.getTaskAt(selectedIndex);
+
+        try {
+            controller.UserBackendController.getController().closeUserTask(task);
+            tableModel.removeTask(selectedIndex);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), constant.ConstantMessages.ERROR_MSG_TITLE, JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButtonCloseTaskActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        SwingUtilities.getWindowAncestor(this).setVisible(false);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButtonCloseTask;
     private javax.swing.JButton jButtonEditTask;
-    private javax.swing.JButton jButtonRemoveTask;
     private javax.swing.JComboBox<AppUser> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -262,5 +379,23 @@ public class JPanelAddTask extends javax.swing.JPanel {
 
         TaskTableModel tableModel = new TaskTableModel(taskList);
         jTable1.setModel(tableModel);
+    }
+
+    private void resetAllFormFields() {
+        jTextFieldTaskTitle.setText(null);
+        jTextAreaTaskDescription.setText(null);
+        jTextFieldStartDate.setText(null);
+        jTextFieldEndDate.setText(null);
+
+    }
+
+    private boolean validateEmptyTaskField(String... fields) {
+        for (String field : fields) {
+            if (field.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "All fields are mentatory!!!", constant.ConstantMessages.ERROR_MSG_TITLE, JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+        }
+        return true;
     }
 }

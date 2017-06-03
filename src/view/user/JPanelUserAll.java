@@ -86,8 +86,8 @@ public class JPanelUserAll extends javax.swing.JPanel {
         jCheckBoxBanedFilter = new javax.swing.JCheckBox();
         jSeparator5 = new javax.swing.JSeparator();
         jLabel9 = new javax.swing.JLabel();
-        jButton9 = new javax.swing.JButton();
-        jButton10 = new javax.swing.JButton();
+        jButtonCountryFilter = new javax.swing.JButton();
+        jButtonCityFilter = new javax.swing.JButton();
         jButton11 = new javax.swing.JButton();
         jButtonResetAllFilters = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
@@ -339,15 +339,20 @@ public class JPanelUserAll extends javax.swing.JPanel {
 
         jLabel9.setText("Advanced Filters");
 
-        jButton9.setText("Country");
-        jButton9.setMaximumSize(new java.awt.Dimension(80, 25));
-        jButton9.setMinimumSize(new java.awt.Dimension(80, 25));
-        jButton9.setPreferredSize(new java.awt.Dimension(80, 25));
+        jButtonCountryFilter.setText("Country");
+        jButtonCountryFilter.setMaximumSize(new java.awt.Dimension(80, 25));
+        jButtonCountryFilter.setMinimumSize(new java.awt.Dimension(80, 25));
+        jButtonCountryFilter.setPreferredSize(new java.awt.Dimension(80, 25));
+        jButtonCountryFilter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCountryFilterActionPerformed(evt);
+            }
+        });
 
-        jButton10.setText("City");
-        jButton10.setMaximumSize(new java.awt.Dimension(80, 25));
-        jButton10.setMinimumSize(new java.awt.Dimension(80, 25));
-        jButton10.setPreferredSize(new java.awt.Dimension(80, 25));
+        jButtonCityFilter.setText("City");
+        jButtonCityFilter.setMaximumSize(new java.awt.Dimension(80, 25));
+        jButtonCityFilter.setMinimumSize(new java.awt.Dimension(80, 25));
+        jButtonCityFilter.setPreferredSize(new java.awt.Dimension(80, 25));
 
         jButton11.setText("Filter");
         jButton11.setMaximumSize(new java.awt.Dimension(80, 25));
@@ -394,9 +399,9 @@ public class JPanelUserAll extends javax.swing.JPanel {
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel9)
                             .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jButtonCountryFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jButtonCityFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(jButton11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addContainerGap(285, Short.MAX_VALUE))
@@ -412,8 +417,8 @@ public class JPanelUserAll extends javax.swing.JPanel {
                 .addComponent(jLabel9)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonCountryFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonCityFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
@@ -692,16 +697,20 @@ public class JPanelUserAll extends javax.swing.JPanel {
         dialog.setVisible(true);
     }//GEN-LAST:event_jButton5ActionPerformed
 
+    private void jButtonCountryFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCountryFilterActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonCountryFilterActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton9;
+    private javax.swing.JButton jButtonCityFilter;
+    private javax.swing.JButton jButtonCountryFilter;
     private javax.swing.JButton jButtonFirstPage;
     private javax.swing.JButton jButtonLastPage;
     private javax.swing.JButton jButtonNextPage;

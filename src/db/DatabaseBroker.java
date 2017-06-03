@@ -174,4 +174,14 @@ public class DatabaseBroker {
 
         return taskList;
     }
+    
+    public Task saveUserTask(Task userTask) {
+        
+        return userTask;
+    }
+    
+    public Task closeUserTask(Task userTask) {
+        
+        return userTask;
+    }
 }
