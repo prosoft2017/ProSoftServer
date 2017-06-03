@@ -416,6 +416,7 @@ public class JFrameStart extends javax.swing.JFrame {
 
         jMenu1.setText("File");
 
+        jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resource/image/user-new.png"))); // NOI18N
         jMenuItem1.setText("New User...");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -460,6 +461,7 @@ public class JFrameStart extends javax.swing.JFrame {
 
         jMenu3.setText("View");
 
+        jMenuItem6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resource/image/all-users-icon.png"))); // NOI18N
         jMenuItem6.setText("All Users...");
         jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

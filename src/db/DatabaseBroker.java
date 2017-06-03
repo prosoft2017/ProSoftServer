@@ -5,11 +5,18 @@
  */
 package db;
 
+import constant.ConstantMessages;
 import domain.AppUser;
+import domain.StatusType;
+import domain.Task;
+import domain.TaskStatus;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import util.FileUtil;
 
 /**
@@ -17,14 +24,14 @@ import util.FileUtil;
  * @author Filip
  */
 public class DatabaseBroker {
-    
+
     private Connection connection;
     private static DatabaseBroker instance;
-    
+
     private DatabaseBroker() {
-        
+
     }
-    
+
     public static DatabaseBroker getInstance() {
         if (instance == null) {
             instance = new DatabaseBroker();
@@ -73,8 +80,26 @@ public class DatabaseBroker {
             throw new Exception("Error while closing connection with database!", ex);
         }
     }
-    
-    public AppUser saveUser(AppUser appUser) throws SQLException {       
+
+    public AppUser validateUser(Object obj) throws Exception {
+        if (!(obj instanceof AppUser)) {
+            throw new Exception(ConstantMessages.SYSTEM_ERROR_MSG);
+        }
+
+        AppUser appUser = (AppUser) obj;
+
+        switch (appUser.getUsername()) {
+            case "fiki":
+            case "admin":
+                return appUser
+                        .setFirstname("Filip")
+                        .setLastname("Admin");
+            default:
+                throw new Exception("Please provide right credintials!!!");
+        }
+    }
+
+    public AppUser saveUser(AppUser appUser) throws SQLException {
         try {
             String sql = "INSERT INTO Address VALUES (?,?,?,?,?,?,?,?,?)";
             PreparedStatement sqlStatement = connection.prepareStatement(sql);
@@ -87,15 +112,66 @@ public class DatabaseBroker {
 //            sqlStatement.setString(7, pp.getUlica());
 //            sqlStatement.setString(8, pp.getBroj());
 //            sqlStatement.setInt(9, pp.getMesto().getPtt());
-            
+
             sqlStatement.executeUpdate();
             sqlStatement.close();
-            
+
             return appUser;
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
-            
+
             throw ex;
         }
+    }
+
+    public List<AppUser> getAllUsers() {
+        List<AppUser> userList = new ArrayList<>();
+        userList.add(new AppUser("1", "qwerq", "asdfasdfa", "qwer@qwer.qwer", StatusType.Active, true, "qwer", "sfas", null));
+        userList.add(new AppUser("2", "q22wer22q", "fsadf34432", "lllllllllllllll@qwer.qwer", StatusType.Active, true, "22222", "asfdasd", null));
+        userList.add(new AppUser("3", "gdsfg", "34523", "asdfasd", StatusType.Active, true, "22222", "asdfa222222sd", null));
+        userList.add(new AppUser("4", "gdfg", "asdf2222222asdfa", "asdfsaf@qwer.qwer", StatusType.Pending, false, "22222", "asdfsd", null));
+        userList.add(new AppUser("5", "q22werrtsert22q", "23423", "lllllllllllllll@qwer.qwer", StatusType.Locked, true, "22222", "ewrwq", null));
+        userList.add(new AppUser("6", "s", "asdf2222222asdfa", "dsfgsd@qwer.qwer", StatusType.Active, true, "23423", "234234", null));
+        userList.add(new AppUser("7", "sert", "asdf2222222asdfa", "23d4r43r@qwer.qwer", StatusType.Active, false, "grt", "asdfa222222sd", null));
+        userList.add(new AppUser("8", "q22wgdfger22q", "asdf2222222asdfa", "fsdf@qwer.qwer", StatusType.Locked, true, "1231", "asdfa222222sd", null));
+        userList.add(new AppUser("9", "34", "asdf2222222asdfa", "dsfrs@qwer.qwer", StatusType.Pending, true, "123123", "423", null));
+        userList.add(new AppUser("10", "ewt", "asdf2222222asdfa", "456fd@qwer.qwer", StatusType.Active, true, "22222", "sadfsad", null));
+        userList.add(new AppUser("11", "ew45y64t", "ascf435", "asdcdsafcsdfads@qwer.qwer", StatusType.Active, true, "22222", "sadfsad", null));
+        userList.add(new AppUser("12", "ewt", "asdf2222222asdfa", "12312312@qwer.qwer", StatusType.Active, true, "123123", "sadfsad", null));
+        userList.add(new AppUser("13", "5y7", "768i876u", "456fd@qwer.qwer", StatusType.Active, true, "22222", "sadfsad", null));
+        userList.add(new AppUser("14", "ewt", "ij87ij87", "ascdfdsacf@qwer.qwer", StatusType.Active, true, "22222", "sadfsad", null));
+        userList.add(new AppUser("15", "ewt", "uj67juh", "456fd@qwer.qwer", StatusType.Active, true, "22222", "sadfsad", null));
+        userList.add(new AppUser("16", "45y654", "asdf2222222asdfa", "456fd@qwer.qwer", StatusType.Active, true, "22222", "sadfsad", null));
+        userList.add(new AppUser("17", "45y645y", "uh567hu", "456fd@qwer.qwer", StatusType.Active, true, "22222", "sadfsad", null));
+        userList.add(new AppUser("18", "gdfg", "asdf2222222asdfa", "asdfsaf@qwer.qwer", StatusType.Pending, false, "22222", "asdfsd", null));
+        userList.add(new AppUser("19", "q22werrtsert22q", "23423", "lllllllllllllll@qwer.qwer", StatusType.Locked, true, "22222", "ewrwq", null));
+        userList.add(new AppUser("20", "s", "asdf2222222asdfa", "dsfgsd@qwer.qwer", StatusType.Active, true, "23423", "234234", null));
+        userList.add(new AppUser("21", "sert", "asdf2222222asdfa", "23d4r43r@qwer.qwer", StatusType.Active, false, "grt", "asdfa222222sd", null));
+        userList.add(new AppUser("22", "q22wgdfger22q", "asdf2222222asdfa", "fsdf@qwer.qwer", StatusType.Locked, true, "1231", "asdfa222222sd", null));
+        userList.add(new AppUser("23", "34", "asdf2222222asdfa", "dsfrs@qwer.qwer", StatusType.Pending, true, "123123", "423", null));
+        userList.add(new AppUser("24", "ewt", "asdf2222222asdfa", "456fd@qwer.qwer", StatusType.Active, true, "22222", "sadfsad", null));
+        userList.add(new AppUser("25", "ew45y64t", "ascf435", "asdcdsafcsdfads@qwer.qwer", StatusType.Active, true, "22222", "sadfsad", null));
+        userList.add(new AppUser("26", "ewt", "asdf2222222asdfa", "12312312@qwer.qwer", StatusType.Active, true, "123123", "sadfsad", null));
+        userList.add(new AppUser("27", "5y7", "768i876u", "456fd@qwer.qwer", StatusType.Active, true, "22222", "sadfsad", null));
+
+        return userList;
+    }
+
+    public List<Task> getAllTasksForUser(AppUser appUser) {
+        List<Task> taskList = new ArrayList<>();
+        taskList.add(new Task("User All Page", "Page JPanelUserAll needs to be updated to have posibility to filter users by date they were last active",
+                appUser, LocalDate.now(), LocalDate.now().plusDays(7), TaskStatus.Active));
+        taskList.add(new Task("User CRUD Page", "Page JPanelUserAll needs to be updated to have posibility to filter users by date they were last active",
+                appUser, LocalDate.now(), LocalDate.now().plusDays(7), TaskStatus.Active));
+        taskList.add(new Task("User Tasks All Page", "Page JPanelUserAll needs to be updated to have posibility to filter users by date they were last active",
+                appUser, LocalDate.now().minusDays(18), LocalDate.now().minusDays(7), TaskStatus.Finished));
+        taskList.add(new Task("Meeting Schedule", "Page JPanelUserAll needs to be updated to have posibility to filter users by date they were last active",
+                appUser, LocalDate.now(), LocalDate.now().plusDays(7), TaskStatus.Active));
+        taskList.add(new Task("Backup Information", "Page JPanelUserAll needs to be updated to have posibility to filter users by date they were last active",
+                appUser, LocalDate.now(), LocalDate.now().plusDays(7), TaskStatus.Active));
+        taskList.add(new Task("Meeting Schedule", "Page JPanelUserAll needs to be updated to have posibility to filter users by date they were last active",
+                appUser, LocalDate.now(), LocalDate.now().plusDays(7), TaskStatus.Active));
+
+        return taskList;
     }
 }

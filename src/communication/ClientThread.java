@@ -5,12 +5,16 @@
  */
 package communication;
 
-
+import constant.ConstantOperations;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.List;
+import transfer.TransferObjectResponse;
+import transfer.TransferObjectRequest;
+import constant.ConstantMessages;
+import controller.Controller;
 
 /**
  *
@@ -18,12 +22,12 @@ import java.util.List;
  */
 public class ClientThread extends Thread {
 
-    private Socket socket;
-    private boolean aktivna;
+    private final Socket socket;
+    private boolean clientConnected;
 
     public ClientThread(Socket socket) {
         this.socket = socket;
-        this.aktivna = true;
+        this.clientConnected = true;
     }
 
     @Override
@@ -32,14 +36,41 @@ public class ClientThread extends Thread {
             runThread();
         } catch (IOException | ClassNotFoundException ex) {
             System.out.println(ex.getMessage());
-            aktivna = false;
+            clientConnected = false;
         }
         System.out.println("Client disconnected.");
     }
 
     private void runThread() throws IOException, ClassNotFoundException {
-           
+        while (clientConnected) {
+            ObjectInputStream inSocket = new ObjectInputStream(socket.getInputStream());
+            TransferObjectRequest request = (TransferObjectRequest) inSocket.readObject();
+            TransferObjectResponse response = new TransferObjectResponse();
+            try {
+                switch (request.getOperation()) {
+                    case ConstantOperations.VALIDATED_USER:
+                        response.setResult(Controller.getController().validateUser(request.getParameter()));
+                        break;
+                    case ConstantOperations.UPDATE_LOGED_USER:
+
+                        break;
+                    case ConstantOperations.CLIENT_DISCONECTED:
+                        clientConnected = false;
+                        break;
+                }
+
+                response.setMesssage(ConstantOperations.SUCCESS_MSG);
+            } catch (Exception ex) {
+                response.setMesssage(ConstantOperations.ERROR_MSG);
+                response.setResponseException(ex);
+            }
+            sendResponse(response);
+        }
     }
 
+    private void sendResponse(TransferObjectResponse response) throws IOException {
+        ObjectOutputStream outSocket = new ObjectOutputStream(socket.getOutputStream());
+        outSocket.writeObject(response);
+    }
 
 }

@@ -5,6 +5,7 @@
  */
 package view.user;
 
+import constant.ConstantMessages;
 import controller.UserBackendController;
 import domain.AppUser;
 import domain.PaginationOption;
@@ -19,6 +20,7 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import model.UserTableModel;
+import view.user.task.JPanelAddTask;
 
 /**
  *
@@ -68,6 +70,9 @@ public class JPanelUserAll extends javax.swing.JPanel {
         jSeparator3 = new javax.swing.JSeparator();
         jLabel4 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
+        jSeparator6 = new javax.swing.JSeparator();
+        jLabel10 = new javax.swing.JLabel();
+        jButton5 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jTextFieldDateFilterFrom = new javax.swing.JTextField();
@@ -196,9 +201,20 @@ public class JPanelUserAll extends javax.swing.JPanel {
 
         jSeparator3.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
-        jLabel4.setText("Execute ban oeration on user.");
+        jLabel4.setText("Execute ban operation on user.");
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Active", "Pending", "Locked" }));
+
+        jSeparator6.setOrientation(javax.swing.SwingConstants.VERTICAL);
+
+        jLabel10.setText("Add tast for selected user");
+
+        jButton5.setText("Add Task");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -213,29 +229,41 @@ public class JPanelUserAll extends javax.swing.JPanel {
                 .addGap(41, 41, 41)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addComponent(jComboBox1, 0, 232, Short.MAX_VALUE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton3)
-                    .addComponent(jLabel4))
-                .addGap(126, 126, 126))
+                    .addComponent(jLabel10)
+                    .addComponent(jButton5))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4)
+                    .addComponent(jButton3))
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel10)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton5))
+                    .addComponent(jSeparator6)
                     .addComponent(jSeparator2)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jCheckBox1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jCheckBox2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jCheckBox3))
+                        .addComponent(jCheckBox3)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
@@ -648,6 +676,22 @@ public class JPanelUserAll extends javax.swing.JPanel {
         jTextFieldCurrentPage.setText("" + page);
     }//GEN-LAST:event_jCheckBoxBanedFilterActionPerformed
 
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        int selectedIndex = jTable1.getSelectedRow();
+        if (selectedIndex < 0) {
+            JOptionPane.showMessageDialog(null, "Please select user to manage their tasks!", ConstantMessages.ERROR_MSG_TITLE, JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        JDialog dialog = new JDialog(null, "User Details", Dialog.ModalityType.APPLICATION_MODAL);
+        JPanel panel = new JPanelAddTask(((UserTableModel) jTable1.getModel()).getUserAt(selectedIndex));
+        dialog.add(panel);
+        dialog.setResizable(false);
+        dialog.pack();
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+    }//GEN-LAST:event_jButton5ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -656,6 +700,7 @@ public class JPanelUserAll extends javax.swing.JPanel {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton9;
     private javax.swing.JButton jButtonFirstPage;
     private javax.swing.JButton jButtonLastPage;
@@ -671,6 +716,7 @@ public class JPanelUserAll extends javax.swing.JPanel {
     private javax.swing.JCheckBox jCheckBoxStatusPending;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -690,6 +736,7 @@ public class JPanelUserAll extends javax.swing.JPanel {
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JSeparator jSeparator5;
+    private javax.swing.JSeparator jSeparator6;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextFieldCurrentPage;
     private javax.swing.JTextField jTextFieldDateFilterFrom;
@@ -703,8 +750,7 @@ public class JPanelUserAll extends javax.swing.JPanel {
         try {
             userList = UserBackendController.getController().getAllUsersFromDB();
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-            JOptionPane.showMessageDialog(null, "System Error. Please contact your administator at \"Help Section\"\n" + ex.getMessage(), "System Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, ConstantMessages.SYSTEM_ERROR_MSG, constant.ConstantMessages.ERROR_MSG_TITLE, JOptionPane.ERROR_MESSAGE);
             return;
         }
 

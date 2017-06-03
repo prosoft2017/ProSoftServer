@@ -6,11 +6,7 @@
 package controller;
 
 import domain.AppUser;
-import domain.StatusType;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
+import so.user.SOValidateUser;
 
 /**
  *
@@ -37,5 +33,12 @@ public class Controller {
 
     public boolean checkEmail(String email) {
         return true;
+    }
+
+    public AppUser validateUser(Object parameter) throws Exception {
+        SOValidateUser validateUser = new SOValidateUser();
+        validateUser.executeSO(parameter);
+
+        return validateUser.getAppUser();
     }
 }
