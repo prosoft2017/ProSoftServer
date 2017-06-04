@@ -6,7 +6,7 @@
 package view.user;
 
 import controller.Controller;
-import domain.AppUser;
+import domain.user.AppUser;
 import domain.UserCRUDType;
 import java.awt.Color;
 import java.lang.reflect.Field;

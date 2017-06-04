@@ -6,7 +6,7 @@
 package so.user.task;
 
 import db.DatabaseBroker;
-import domain.Task;
+import domain.task.Task;
 import so.GeneralSO;
 
 /**

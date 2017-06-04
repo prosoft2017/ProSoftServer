@@ -7,9 +7,9 @@ package view.user;
 
 import constant.ConstantMessages;
 import controller.UserBackendController;
-import domain.AppUser;
+import domain.user.AppUser;
 import domain.PaginationOption;
-import domain.StatusType;
+import domain.user.StatusType;
 import domain.UserCRUDType;
 import java.awt.Dialog;
 import java.lang.reflect.Array;

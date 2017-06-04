@@ -6,7 +6,7 @@
 package so.user;
 
 import db.DatabaseBroker;
-import domain.AppUser;
+import domain.user.AppUser;
 import so.GeneralSO;
 
 /**

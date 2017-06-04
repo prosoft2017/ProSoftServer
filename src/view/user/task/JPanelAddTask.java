@@ -5,9 +5,9 @@
  */
 package view.user.task;
 
-import domain.AppUser;
-import domain.Task;
-import domain.TaskStatus;
+import domain.user.AppUser;
+import domain.task.Task;
+import domain.task.TaskStatus;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;

@@ -5,7 +5,7 @@
  */
 package model;
 
-import domain.Task;
+import domain.task.Task;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;

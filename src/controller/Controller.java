@@ -5,7 +5,10 @@
  */
 package controller;
 
-import domain.AppUser;
+import communication.Communication;
+import communication.ReciveMessageThread;
+import domain.user.AppUser;
+import java.io.IOException;
 import so.user.SOValidateUser;
 
 /**
@@ -40,5 +43,11 @@ public class Controller {
         validateUser.executeSO(parameter);
 
         return validateUser.getAppUser();
+    }
+    
+    public void sendGlobalMessage(String message) throws IOException {
+        for (ReciveMessageThread activeUserThread : Communication.activeUsers) {
+            activeUserThread.sendMessageToThisUser(message);
+        }
     }
 }

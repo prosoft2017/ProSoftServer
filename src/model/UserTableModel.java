@@ -5,8 +5,8 @@
  */
 package model;
 
-import domain.AppUser;
-import domain.StatusType;
+import domain.user.AppUser;
+import domain.user.StatusType;
 import filter.user.UserFilter;
 import java.util.ArrayList;
 import java.util.List;

@@ -5,8 +5,8 @@
  */
 package filter.user;
 
-import domain.AppUser;
-import domain.StatusType;
+import domain.user.AppUser;
+import domain.user.StatusType;
 import java.util.List;
 
 /**

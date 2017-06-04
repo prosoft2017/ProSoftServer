@@ -6,10 +6,10 @@
 package db;
 
 import constant.ConstantMessages;
-import domain.AppUser;
-import domain.StatusType;
-import domain.Task;
-import domain.TaskStatus;
+import domain.user.AppUser;
+import domain.user.StatusType;
+import domain.task.Task;
+import domain.task.TaskStatus;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;

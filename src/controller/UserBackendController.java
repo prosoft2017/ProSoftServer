@@ -5,9 +5,9 @@
  */
 package controller;
 
-import domain.AppUser;
-import domain.StatusType;
-import domain.Task;
+import domain.user.AppUser;
+import domain.user.StatusType;
+import domain.task.Task;
 import java.util.ArrayList;
 import java.util.List;
 import so.user.SOAllTasks;

@@ -6,8 +6,8 @@
 package so.user;
 
 import db.DatabaseBroker;
-import domain.AppUser;
-import domain.Task;
+import domain.user.AppUser;
+import domain.task.Task;
 import java.util.List;
 import so.GeneralSO;
 
