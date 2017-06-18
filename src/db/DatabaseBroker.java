@@ -126,8 +126,8 @@ public class DatabaseBroker {
 
     public List<AppUser> getAllUsers() {
         List<AppUser> userList = new ArrayList<>();
-        userList.add(new AppUser("1", "qwerq", "asdfasdfa", "qwer@qwer.qwer", StatusType.Active, true, "qwer", "sfas", null));
-        userList.add(new AppUser("2", "q22wer22q", "fsadf34432", "lllllllllllllll@qwer.qwer", StatusType.Active, true, "22222", "asfdasd", null));
+        userList.add(new AppUser("1", "Pera", "Peric", "qwer@qwer.qwer", StatusType.Active, true, "qwer", "sfas", null));
+        userList.add(new AppUser("2", "Admin", "Adminovic", "lllllllllllllll@qwer.qwer", StatusType.Active, true, "22222", "asfdasd", null));
         userList.add(new AppUser("3", "gdsfg", "34523", "asdfasd", StatusType.Active, true, "22222", "asdfa222222sd", null));
         userList.add(new AppUser("4", "gdfg", "asdf2222222asdfa", "asdfsaf@qwer.qwer", StatusType.Pending, false, "22222", "asdfsd", null));
         userList.add(new AppUser("5", "q22werrtsert22q", "23423", "lllllllllllllll@qwer.qwer", StatusType.Locked, true, "22222", "ewrwq", null));
@@ -154,6 +154,15 @@ public class DatabaseBroker {
         userList.add(new AppUser("26", "ewt", "asdf2222222asdfa", "12312312@qwer.qwer", StatusType.Active, true, "123123", "sadfsad", null));
         userList.add(new AppUser("27", "5y7", "768i876u", "456fd@qwer.qwer", StatusType.Active, true, "22222", "sadfsad", null));
 
+        Task t = new Task();
+        t.setTitle("Task 1");
+        t.setAppUser(userList.get(0));
+        List<Task> listT = new ArrayList<>();
+        listT.add(t);
+        userList.forEach((user) -> {
+            user.setAllTasks(listT);
+            user.setLastActive(LocalDate.now());
+        });
         return userList;
     }
 
@@ -174,14 +183,14 @@ public class DatabaseBroker {
 
         return taskList;
     }
-    
+
     public Task saveUserTask(Task userTask) {
-        
+
         return userTask;
     }
-    
+
     public Task closeUserTask(Task userTask) {
-        
+
         return userTask;
     }
 }
