@@ -154,6 +154,11 @@ public class DatabaseBroker {
         userList.add(new AppUser("26", "ewt", "asdf2222222asdfa", "12312312@qwer.qwer", StatusType.Active, true, "123123", "sadfsad", null));
         userList.add(new AppUser("27", "5y7", "768i876u", "456fd@qwer.qwer", StatusType.Active, true, "22222", "sadfsad", null));
 
+        Task t = new Task();
+        t.setTitle("Task 1");
+        List<Task> listT = new ArrayList<>();
+        listT.add(t);
+        userList.forEach((user) -> user.setAllTasks(listT));
         return userList;
     }
 

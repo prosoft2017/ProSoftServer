@@ -5,13 +5,22 @@
  */
 package view;
 
+import domain.AppUser;
+import domain.Task;
 import domain.UserCRUDType;
 import java.awt.Dialog;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTree;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeSelectionModel;
 import view.user.JPanelBanUser;
 import view.user.JPanelUserAll;
 import view.user.JPanelUserCRUD;
@@ -20,13 +29,15 @@ import view.user.JPanelUserCRUD;
  *
  * @author Nikola
  */
-public class JFrameStart extends javax.swing.JFrame {
+public class JFrameStart extends javax.swing.JFrame implements TreeSelectionListener {
 
     /**
      * Creates new form JFrameStart
      */
     public JFrameStart() {
         initComponents();
+        initTreeComponents();
+        initStatusPanels();
     }
 
     /**
@@ -62,16 +73,16 @@ public class JFrameStart extends javax.swing.JFrame {
         jLabel17 = new javax.swing.JLabel();
         jPanel12 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
+        jLabelNewUsers = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
+        jLabelActiveUsers = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
-        jLabel5 = new javax.swing.JLabel();
+        jLabelNewNotifications = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -113,12 +124,6 @@ public class JFrameStart extends javax.swing.JFrame {
         jScrollPane1.setPreferredSize(new java.awt.Dimension(220, 322));
 
         javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("All Users");
-        javax.swing.tree.DefaultMutableTreeNode treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("Peter");
-        treeNode1.add(treeNode2);
-        treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("Mike");
-        treeNode1.add(treeNode2);
-        treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("Stephan");
-        treeNode1.add(treeNode2);
         jTree1.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
         jTree1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -131,9 +136,9 @@ public class JFrameStart extends javax.swing.JFrame {
 
         jPanel9.setBorder(javax.swing.BorderFactory.createTitledBorder("Message Activity"));
 
+        jTextArea1.setEditable(false);
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
-        jTextArea1.setText("Filip994: E si tu\nFilip994: EEeeeee.....\nanonymous: eeee\nanonymous: reeciii....\nFilip994: ahadfh\nFilip994: asdfkjasd\nanonymous: qweuirowque");
         jScrollPane2.setViewportView(jTextArea1);
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
@@ -229,7 +234,7 @@ public class JFrameStart extends javax.swing.JFrame {
 
         jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "All Users", javax.swing.border.TitledBorder.RIGHT, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 
-        jLabel2.setText("8 New Users");
+        jLabelNewUsers.setText("8 New Users");
 
         jLabel7.setText("This Mount");
 
@@ -240,14 +245,14 @@ public class JFrameStart extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                 .addContainerGap(30, Short.MAX_VALUE)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel2)
+                    .addComponent(jLabelNewUsers)
                     .addComponent(jLabel7))
                 .addGap(35, 35, 35))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addComponent(jLabel2)
+                .addComponent(jLabelNewUsers)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
                 .addComponent(jLabel7))
         );
@@ -256,7 +261,7 @@ public class JFrameStart extends javax.swing.JFrame {
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Active Users", javax.swing.border.TitledBorder.RIGHT, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 
-        jLabel3.setText("15 Users");
+        jLabelActiveUsers.setText("15 Users");
 
         jLabel8.setText("Online");
 
@@ -267,14 +272,14 @@ public class JFrameStart extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap(35, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel3)
+                    .addComponent(jLabelActiveUsers)
                     .addComponent(jLabel8))
                 .addGap(35, 35, 35))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addComponent(jLabel3)
+                .addComponent(jLabelActiveUsers)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel8)
                 .addContainerGap())
@@ -311,7 +316,7 @@ public class JFrameStart extends javax.swing.JFrame {
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "New Notifications", javax.swing.border.TitledBorder.RIGHT, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 
-        jLabel5.setText("3 New");
+        jLabelNewNotifications.setText("3 New");
 
         jLabel6.setText("Notifications");
 
@@ -323,13 +328,13 @@ public class JFrameStart extends javax.swing.JFrame {
                 .addContainerGap(35, Short.MAX_VALUE)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel6)
-                    .addComponent(jLabel5))
+                    .addComponent(jLabelNewNotifications))
                 .addGap(35, 35, 35))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addComponent(jLabel5)
+                .addComponent(jLabelNewNotifications)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel6)
                 .addContainerGap())
@@ -520,14 +525,12 @@ public class JFrameStart extends javax.swing.JFrame {
                 + "\r\n"
                 + "Server is running on port: 20453"
                 + "\r\n";
-        jTextArea1.append(startServerString);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
         String abortServerString = "\r\n"
                 + "*********      SERVER IS SHUTTING DOWN     *********"
                 + "\r\n";
-        jTextArea1.append(abortServerString);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -540,12 +543,10 @@ public class JFrameStart extends javax.swing.JFrame {
 
         Object nodeInfo = node.getUserObject();
 
-        if (!node.isLeaf()) {
+        if (!(nodeInfo instanceof AppUser)) {
             JOptionPane.showMessageDialog(this, "Please select user to promote", "Promoting User", JOptionPane.ERROR_MESSAGE);
             return;
         }
-
-        System.out.println(nodeInfo);
 
         String msg = "You are going to promote user " + nodeInfo;
         int response = JOptionPane.showConfirmDialog(this, msg, "Promoting User", JOptionPane.YES_NO_OPTION);
@@ -565,12 +566,10 @@ public class JFrameStart extends javax.swing.JFrame {
 
         Object nodeInfo = node.getUserObject();
 
-        if (!node.isLeaf()) {
+        if (!(nodeInfo instanceof AppUser)) {
             JOptionPane.showMessageDialog(this, "Please select user to promote to VIP", "Promoting User", JOptionPane.ERROR_MESSAGE);
             return;
         }
-
-        System.out.println(nodeInfo);
 
         String msg = "You are going to promote user " + nodeInfo;
         int response = JOptionPane.showConfirmDialog(this, msg, "Promoting User", JOptionPane.YES_NO_OPTION);
@@ -596,14 +595,14 @@ public class JFrameStart extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel jLabelActiveUsers;
+    private javax.swing.JLabel jLabelNewNotifications;
+    private javax.swing.JLabel jLabelNewUsers;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
@@ -641,4 +640,51 @@ public class JFrameStart extends javax.swing.JFrame {
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTree jTree1;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void valueChanged(TreeSelectionEvent e) {
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode) jTree1.getLastSelectedPathComponent();
+
+        if (node == null) {
+            return;
+        }
+
+        Object nodeInfo = node.getUserObject();
+        if (nodeInfo instanceof AppUser) {
+            jTextArea1.append(nodeInfo.toString() + System.lineSeparator());
+        } else if (nodeInfo instanceof Task) {
+            jTextArea1.append(nodeInfo.toString() + System.lineSeparator());
+        }
+    }
+
+    private void initTreeComponents() {
+        DefaultMutableTreeNode root
+                = new DefaultMutableTreeNode("All Users");
+        populateNodes(root);
+        jTree1.setModel(new DefaultTreeModel(root));
+        jTree1.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+        jTree1.addTreeSelectionListener(this);
+    }
+
+    private void populateNodes(DefaultMutableTreeNode users) {
+        DefaultMutableTreeNode activeTasks = new DefaultMutableTreeNode("Active Tasks");
+        List<AppUser> registeredUsers = new ArrayList<>();
+        try {
+            registeredUsers = controller.UserBackendController.getController().getAllUsersFromDB();
+        } catch (Exception ex) {
+        }
+
+        registeredUsers.forEach((appUser) -> {
+            DefaultMutableTreeNode userNode = new DefaultMutableTreeNode(appUser);
+            appUser.getAllTasks().forEach((task) -> {
+                DefaultMutableTreeNode taskNode = new DefaultMutableTreeNode(task);
+                userNode.add(taskNode);
+            });
+            users.add(userNode);
+        });
+    }
+
+    private void initStatusPanels() {
+        jLabelActiveUsers.setText("0 Users");
+    }
 }
