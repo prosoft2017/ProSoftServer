@@ -3,29 +3,28 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package so.user;
+package so.user.task;
 
 import db.DatabaseBroker;
-import domain.user.AppUser;
 import domain.task.Task;
-import java.util.List;
 import so.GeneralSO;
 
 /**
  *
- * @author Filip
+ * @author Nikola
  */
-public class SOAllTasks extends GeneralSO{
+public class SOSaveNewUserTask extends GeneralSO{
 
-    private List<Task> allTasks;
+    private Task userTask;
 
+    
     @Override
     protected void executeSpecificOperation(Object obj) throws Exception {
-        allTasks = DatabaseBroker.getInstance().getAllTasksForUser((AppUser) obj);
+        userTask = DatabaseBroker.getInstance().saveUserTask((Task) obj);
     }
 
-    public List<Task> getAllTasks() {
-        return allTasks;
+    public Task getUserTask() {
+        return userTask;
     }
     
 }

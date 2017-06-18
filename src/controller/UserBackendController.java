@@ -5,14 +5,16 @@
  */
 package controller;
 
-import domain.AppUser;
-import domain.StatusType;
-import domain.Task;
+import domain.user.AppUser;
+import domain.user.StatusType;
+import domain.task.Task;
 import java.util.ArrayList;
 import java.util.List;
 import so.user.SOAllTasks;
 import so.user.SOAllUsers;
 import so.user.SOSaveUser;
+import so.user.task.SOCloseTask;
+import so.user.task.SOSaveNewUserTask;
 
 /**
  *
@@ -38,7 +40,7 @@ public class UserBackendController {
         soau.executeSO(null);
         return soau.getAllUsers();
     }
-    
+
     public List<Task> getAllTasksForUser(AppUser appUser) throws Exception {
         SOAllTasks soat = new SOAllTasks();
         soat.executeSO(appUser);
@@ -50,4 +52,17 @@ public class UserBackendController {
         gso.executeSO(appUser);
         return gso.getUser();
     }
+
+    public Task saveUserTask(Task task) throws Exception {
+        SOSaveNewUserTask sosu = new SOSaveNewUserTask();
+        sosu.executeSO(task);
+        return sosu.getUserTask();
+    }
+
+    public Task closeUserTask(Task task) throws Exception {
+        SOCloseTask sosu = new SOCloseTask();
+        sosu.executeSO(task);
+        return sosu.getUserTask();
+    }
+
 }

@@ -6,10 +6,10 @@
 package db;
 
 import constant.ConstantMessages;
-import domain.AppUser;
-import domain.StatusType;
-import domain.Task;
-import domain.TaskStatus;
+import domain.user.AppUser;
+import domain.user.StatusType;
+import domain.task.Task;
+import domain.task.TaskStatus;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -178,5 +178,15 @@ public class DatabaseBroker {
                 appUser, LocalDate.now(), LocalDate.now().plusDays(7), TaskStatus.Active));
 
         return taskList;
+    }
+    
+    public Task saveUserTask(Task userTask) {
+        
+        return userTask;
+    }
+    
+    public Task closeUserTask(Task userTask) {
+        
+        return userTask;
     }
 }

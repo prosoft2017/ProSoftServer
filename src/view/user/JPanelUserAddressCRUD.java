@@ -7,9 +7,9 @@ package view.user;
 
 import controller.Controller;
 import controller.UserBackendController;
-import domain.Address;
-import domain.AppUser;
-import domain.Country;
+import domain.user.Address;
+import domain.user.AppUser;
+import domain.user.Country;
 import domain.UserCRUDType;
 import java.awt.Color;
 import java.lang.reflect.Field;

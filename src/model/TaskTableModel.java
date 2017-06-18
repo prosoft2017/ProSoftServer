@@ -5,7 +5,7 @@
  */
 package model;
 
-import domain.Task;
+import domain.task.Task;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
@@ -60,6 +60,25 @@ public class TaskTableModel extends AbstractTableModel {
                 return "N/A";
         }
 
+    }
+
+    public void addNewTask(Task userTask) {
+        taskList.add(userTask);
+        fireTableDataChanged();
+    }
+
+    public Task getTaskAt(int selectedIndex) {
+        return taskList.get(selectedIndex);
+    }
+    
+    public void removeTask(int row) {
+        taskList.remove(row);
+        fireTableDataChanged();
+    }
+    
+    public void removeTask(Task task) {
+        taskList.remove(task);
+        fireTableDataChanged();
     }
 
 }

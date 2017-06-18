@@ -5,8 +5,8 @@
  */
 package filter.user;
 
-import domain.AppUser;
-import domain.Country;
+import domain.user.AppUser;
+import domain.user.Country;
 import java.util.List;
 
 /**

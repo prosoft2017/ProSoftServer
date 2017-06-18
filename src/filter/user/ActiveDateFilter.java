@@ -5,7 +5,7 @@
  */
 package filter.user;
 
-import domain.AppUser;
+import domain.user.AppUser;
 import java.time.LocalDate;
 
 /**

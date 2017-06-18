@@ -15,6 +15,7 @@ import transfer.TransferObjectResponse;
 import transfer.TransferObjectRequest;
 import constant.ConstantMessages;
 import controller.Controller;
+import domain.user.AppUser;
 
 /**
  *
@@ -24,10 +25,12 @@ public class ClientThread extends Thread {
 
     private final Socket socket;
     private boolean clientConnected;
+    private final ReciveMessageThread messageThread;
 
-    public ClientThread(Socket socket) {
+    public ClientThread(Socket socket, ReciveMessageThread messageThread) {
         this.socket = socket;
         this.clientConnected = true;
+        this.messageThread = messageThread;
     }
 
     @Override
@@ -49,7 +52,9 @@ public class ClientThread extends Thread {
             try {
                 switch (request.getOperation()) {
                     case ConstantOperations.VALIDATED_USER:
-                        response.setResult(Controller.getController().validateUser(request.getParameter()));
+                        AppUser appUser = Controller.getController().validateUser(request.getParameter());
+                        response.setResult(appUser);
+                        messageThread.setUser(appUser);
                         break;
                     case ConstantOperations.UPDATE_LOGED_USER:
 

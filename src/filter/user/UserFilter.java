@@ -5,9 +5,9 @@
  */
 package filter.user;
 
-import domain.AppUser;
-import domain.Country;
-import domain.StatusType;
+import domain.user.AppUser;
+import domain.user.Country;
+import domain.user.StatusType;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
