@@ -16,6 +16,7 @@ import transfer.TransferObjectRequest;
 import constant.ConstantMessages;
 import controller.Controller;
 import domain.user.AppUser;
+import java.util.ArrayList;
 
 /**
  *
@@ -55,6 +56,13 @@ public class ClientThread extends Thread {
                         AppUser appUser = Controller.getController().validateUser(request.getParameter());
                         response.setResult(appUser);
                         messageThread.setUser(appUser);
+                        break;
+                    case ConstantOperations.GET_ALL_ACTIVE_USERES:
+                        List<AppUser> usersAll = new ArrayList<>();
+                        Communication.activeUsers.forEach((activeUserThread) -> {
+                            usersAll.add(activeUserThread.getUser());
+                        });
+                        response.setResult(usersAll);
                         break;
                     case ConstantOperations.UPDATE_LOGED_USER:
 

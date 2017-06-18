@@ -5,11 +5,16 @@
  */
 package communication;
 
+import constant.ConstantOperations;
+import domain.chat.Message;
+import domain.chat.MessageType;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import transfer.TransferObjectResponse;
 
 /**
  *
@@ -26,12 +31,12 @@ public class Communication {
         while (true) {
             Socket socket = ss.accept();
             System.out.println("Client Connected.");
-            
+
             Socket chatSocket = chatServer.accept();
             ReciveMessageThread reciveMessageThread = new ReciveMessageThread(chatSocket);
             reciveMessageThread.start();
             activeUsers.add(reciveMessageThread);
-            
+
             new ClientThread(socket, reciveMessageThread).start();
         }
     }

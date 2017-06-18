@@ -102,6 +102,11 @@ public class JFrameStart extends javax.swing.JFrame {
         jMenuItem7 = new javax.swing.JMenuItem();
 
         jMenuViewUser.setText("View User...");
+        jMenuViewUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuViewUserActionPerformed(evt);
+            }
+        });
         jPopupMenu1.add(jMenuViewUser);
 
         jMenuItemEditUser.setText("Edit User...");
@@ -604,6 +609,10 @@ public class JFrameStart extends javax.swing.JFrame {
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
     }//GEN-LAST:event_jMenuItem7ActionPerformed
+
+    private void jMenuViewUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuViewUserActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuViewUserActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

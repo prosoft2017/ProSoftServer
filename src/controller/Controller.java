@@ -7,8 +7,11 @@ package controller;
 
 import communication.Communication;
 import communication.ReciveMessageThread;
+import domain.chat.Message;
+import domain.chat.MessageType;
 import domain.user.AppUser;
 import java.io.IOException;
+import java.util.List;
 import so.user.SOValidateUser;
 
 /**
@@ -44,10 +47,27 @@ public class Controller {
 
         return validateUser.getAppUser();
     }
-    
-    public void sendGlobalMessage(String message) throws IOException {
+
+    public void sendGlobalMessage(String messageContent) throws IOException {
         for (ReciveMessageThread activeUserThread : Communication.activeUsers) {
+            Message message = new Message();
+            message.setMessageContent(messageContent);
+            message.setMessageType(MessageType.Global);
             activeUserThread.sendMessageToThisUser(message);
+        }
+    }
+
+    public void sendPrivateMessage(String messageContent, List<AppUser> userList) throws IOException {
+        for (AppUser appUser : userList) {
+            for (ReciveMessageThread activeUserThread : Communication.activeUsers) {
+                if (appUser.getUsername().equals(activeUserThread.getUser().getUsername())) {
+                    Message message = new Message();
+                    message.setMessageContent(messageContent);
+                    message.setMessageType(MessageType.Private);
+                    activeUserThread.sendMessageToThisUser(message);
+                    break;
+                }
+            }
         }
     }
 }

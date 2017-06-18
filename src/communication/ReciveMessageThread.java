@@ -37,6 +37,7 @@ public class ReciveMessageThread extends Thread {
         } catch (IOException | ClassNotFoundException ex) {
             System.out.println(ex.getMessage());
         }
+        Communication.activeUsers.remove(this);
         System.out.println("Client disconnected.");
     }
 
@@ -50,8 +51,13 @@ public class ReciveMessageThread extends Thread {
             response.setResult(message);
             response.setMesssage(ConstantOperations.SUCCESS_MSG);
 
-            for (ReciveMessageThread activeUseThreadr : Communication.activeUsers) {
-                sendMessage(response, activeUseThreadr.getSocket());
+            for (AppUser appUser : message.getAppUserReciver()) {
+                for (ReciveMessageThread activeUserThread : Communication.activeUsers) {
+                    if (appUser.getUsername().equals(activeUserThread.getUser().getUsername())) {
+                        sendMessage(response, activeUserThread.getSocket());
+                        break;
+                    }
+                }
             }
         }
     }
@@ -73,14 +79,11 @@ public class ReciveMessageThread extends Thread {
         return socket;
     }
 
-    public void sendMessageToThisUser(String messageContent) throws IOException {
+    public void sendMessageToThisUser(Message message) throws IOException {
         TransferObjectResponse response = new TransferObjectResponse();
-        Message message = new Message();
-        message.setMessageContent(messageContent);
-        message.setMessageType(MessageType.Global);
         response.setResult(message);
         response.setMesssage(ConstantOperations.SUCCESS_MSG);
-        
+
         ObjectOutputStream outSocket = new ObjectOutputStream(socket.getOutputStream());
         outSocket.writeObject(response);
     }
