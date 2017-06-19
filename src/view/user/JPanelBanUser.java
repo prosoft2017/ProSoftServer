@@ -5,7 +5,12 @@
  */
 package view.user;
 
+import domain.user.AppUser;
 import java.awt.Dialog;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -21,6 +26,7 @@ public class JPanelBanUser extends javax.swing.JPanel {
      */
     public JPanelBanUser() {
         initComponents();
+        initUserCombobox();
     }
 
     /**
@@ -46,6 +52,7 @@ public class JPanelBanUser extends javax.swing.JPanel {
         jLabel2.setText("<html>\nAfter selecting user you want to ban, you will be redirect to confirmation page, where you can add additional information about ban.<br />\n<ul>\n<li>You can unban user anytime you want on edit user page</li>\n<li>If user is inactive, you maybe want to use option to lock his acount insted of ban</li>\n<li>And other stuf</li>\n</ul>\n</html>");
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.setToolTipText("");
 
         jButton1.setText("Ban User");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -105,7 +112,7 @@ public class JPanelBanUser extends javax.swing.JPanel {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         JDialog dialog = new JDialog(null, "Ban Confrmation", Dialog.ModalityType.APPLICATION_MODAL);
-        JPanel panel = new JPanelBanConfirmation();
+        JPanel panel = new JPanelBanConfirmation((AppUser) jComboBox1.getSelectedItem());
         dialog.add(panel);
         dialog.setResizable(false);
         dialog.pack();
@@ -117,9 +124,19 @@ public class JPanelBanUser extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<Object> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JSeparator jSeparator1;
     // End of variables declaration//GEN-END:variables
+
+    private void initUserCombobox() {
+        try {
+            List<AppUser> list = controller.UserBackendController.getController().getAllUsersFromDB();
+            jComboBox1.removeAllItems();
+            jComboBox1.setModel(new DefaultComboBoxModel<>(list.toArray()));
+        } catch (Exception ex) {
+            Logger.getLogger(JPanelBanUser.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

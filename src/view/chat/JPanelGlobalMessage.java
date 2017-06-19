@@ -48,6 +48,7 @@ public class JPanelGlobalMessage extends javax.swing.JPanel {
         jScrollPane1.setViewportView(jTextArea1);
 
         jButton1.setText("Help");
+        jButton1.setEnabled(false);
 
         jButton2.setText("Cancel");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -115,8 +116,20 @@ public class JPanelGlobalMessage extends javax.swing.JPanel {
             return;
         }
 
+        int yesNoResponse = JOptionPane.showConfirmDialog(null, "You are sending this message to all active users.\nDo you want to proced", "Send Message", JOptionPane.YES_NO_OPTION);
+
+        if (yesNoResponse == JOptionPane.NO_OPTION) {
+            return;
+        }
+
         try {
             Controller.getController().sendGlobalMessage(messageContent);
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Message successfuly send to all active users.",
+                    "Sent Message",
+                    JOptionPane.INFORMATION_MESSAGE);
+            SwingUtilities.getWindowAncestor(this).setVisible(false);
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(
                     null,

@@ -319,4 +319,10 @@ public class DatabaseBroker {
         sqlStatment.executeUpdate();
         sqlStatment.close();
     }
+
+    public boolean banUser(AppUser appUser) {
+        appUser.setBaned(true);
+        
+        return true;
+    }
 }

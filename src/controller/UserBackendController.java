@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import so.user.SOAllTasks;
 import so.user.SOAllUsers;
+import so.user.SOBanUser;
 import so.user.SOSaveUser;
 import so.user.task.SOCloseTask;
 import so.user.task.SOSaveNewUserTask;
@@ -63,6 +64,12 @@ public class UserBackendController {
         SOCloseTask sosu = new SOCloseTask();
         sosu.executeSO(task);
         return sosu.getUserTask();
+    }
+
+    public boolean banUser(AppUser appUser) throws Exception {
+        SOBanUser sosu = new SOBanUser();
+        sosu.executeSO(appUser);
+        return sosu.getResponse();
     }
 
 }

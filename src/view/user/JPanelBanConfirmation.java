@@ -5,6 +5,10 @@
  */
 package view.user;
 
+import domain.user.AppUser;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 /**
@@ -13,11 +17,16 @@ import javax.swing.SwingUtilities;
  */
 public class JPanelBanConfirmation extends javax.swing.JPanel {
 
+    private final AppUser appUser;
+
     /**
      * Creates new form JPanelBanConfirmation
+     *
+     * @param appUser
      */
-    public JPanelBanConfirmation() {
+    public JPanelBanConfirmation(AppUser appUser) {
         initComponents();
+        this.appUser = appUser;
     }
 
     /**
@@ -48,6 +57,11 @@ public class JPanelBanConfirmation extends javax.swing.JPanel {
         jLabel2.setText("Are you sure you want to exucute this operation?");
 
         jButton1.setText("Ban User");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Cancel");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -99,6 +113,18 @@ public class JPanelBanConfirmation extends javax.swing.JPanel {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         SwingUtilities.getWindowAncestor(this).setVisible(false);
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        try {
+            boolean response = controller.UserBackendController.getController().banUser(appUser);
+            if (response) {
+                JOptionPane.showMessageDialog(null, "User successfully baned", constant.ConstantMessages.SUCCESS_MSG_TITLE, JOptionPane.INFORMATION_MESSAGE);
+                SwingUtilities.getWindowAncestor(this).setVisible(false);
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), constant.ConstantMessages.ERROR_MSG_TITLE, JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
