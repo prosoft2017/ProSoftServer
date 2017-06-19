@@ -24,24 +24,27 @@ import javax.swing.SwingUtilities;
  *
  * @author Nikola
  */
-public class JPanelUserCRUD extends javax.swing.JPanel {
+public class JPanelUserBasicInfoCRUD extends javax.swing.JPanel {
 
     private final AppUser appUser;
     private final UserCRUDType cRUDType;
     private boolean formSubmitetedOnce = false;
     private final String passwordPaterrn = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
     private final String emailPaterrn = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}";
+    private final JPanelUserCrud parent;
 
     /**
      * Creates new form JPanelUserCRUD
      *
      * @param appUser
      * @param cRUDType
+     * @param parent
      */
-    public JPanelUserCRUD(AppUser appUser, UserCRUDType cRUDType) {
+    public JPanelUserBasicInfoCRUD(AppUser appUser, UserCRUDType cRUDType, JPanelUserCrud parent) {
         initComponents();
-        this.appUser = appUser == null ? new AppUser() : appUser;
+        this.appUser = appUser;
         this.cRUDType = cRUDType;
+        this.parent = parent;
         initCustomCompoents();
     }
 
@@ -186,7 +189,7 @@ public class JPanelUserCRUD extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jSeparator2)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTextFieldImagePath, javax.swing.GroupLayout.DEFAULT_SIZE, 454, Short.MAX_VALUE)
+                        .addComponent(jTextFieldImagePath, javax.swing.GroupLayout.DEFAULT_SIZE, 455, Short.MAX_VALUE)
                         .addGap(18, 18, 18)
                         .addComponent(jButtonSelectImage))
                     .addGroup(layout.createSequentialGroup()
@@ -300,12 +303,10 @@ public class JPanelUserCRUD extends javax.swing.JPanel {
             formValid = validateUser();
         } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "System Error", JOptionPane.ERROR_MESSAGE);
-//            JOptionPane.showMessageDialog(null, "System Error. Please contact your administator at \"Help Section\"", "System Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         if (!formValid) {
-//            JOptionPane.showMessageDialog(null, "Form is not valid! Please check all fields and submit form again.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -313,16 +314,19 @@ public class JPanelUserCRUD extends javax.swing.JPanel {
         appUser.setLastname(jTextFieldLastname.getText().trim());
         appUser.setUsername(jTextFieldUsername.getText().trim());
         appUser.setEmail(jTextFieldEmail.getText().trim());
-        appUser.setPassword(jPasswordField.getText().trim());
+        if (cRUDType == UserCRUDType.Add) {
+            appUser.setPassword(jPasswordField.getText().trim());
+        }
         appUser.setImagePath(jTextFieldImagePath.getText().trim());
-        
-        JPanel panel = new JPanelUserAddressCRUD(appUser, cRUDType);
-        JDialog dialog  = (JDialog) SwingUtilities.getWindowAncestor(this);
-        dialog.remove(this);
-        dialog.add(panel);
-        dialog.invalidate();
-        dialog.validate();
-        dialog.repaint();
+
+        parent.goToAddressStep();
+//        JPanel panel = new JPanelUserAddressCRUD(appUser, cRUDType);
+//        JDialog dialog  = (JDialog) SwingUtilities.getWindowAncestor(this);
+//        dialog.remove(this);
+//        dialog.add(panel);
+//        dialog.invalidate();
+//        dialog.validate();
+//        dialog.repaint();
 
 //        switch (cRUDType) {
 //            case Add:
@@ -533,12 +537,17 @@ public class JPanelUserCRUD extends javax.swing.JPanel {
             case Add:
                 break;
             case View:
-                jButtonNextStep.setEnabled(false);
                 Arrays.asList(jTextFieldFirstname, jTextFieldLastname, jTextFieldUsername, jTextFieldEmail, jTextFieldImagePath, jPasswordField, jPasswordFieldRepeat)
                         .stream()
                         .forEach((field) -> field.setEditable(false));
             case Edit:
                 formSubmitetedOnce = true;
+                jPasswordField.setEditable(false);
+                jPasswordFieldRepeat.setEditable(false);
+                jPasswordField.setText("password");
+                jPasswordFieldRepeat.setText("password");
+                jPasswordField.setToolTipText("You are not allowed to change password!");
+                jPasswordFieldRepeat.setToolTipText("You are not allowed to change password!");
                 setUpFields();
                 break;
         }

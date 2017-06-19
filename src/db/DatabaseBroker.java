@@ -193,4 +193,10 @@ public class DatabaseBroker {
 
         return userTask;
     }
+
+    public boolean banUser(AppUser appUser) {
+        appUser.setBaned(true);
+        
+        return true;
+    }
 }

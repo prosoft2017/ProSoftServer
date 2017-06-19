@@ -34,17 +34,20 @@ public class JPanelUserAddressCRUD extends javax.swing.JPanel {
     private boolean formSubmitetedOnce = false;
     private final String passwordPaterrn = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
     private final String emailPaterrn = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}";
+    private final JPanelUserCrud parent;
 
     /**
      * Creates new form JPanelUserCRUD
      *
      * @param appUser
      * @param cRUDType
+     * @param parent
      */
-    public JPanelUserAddressCRUD(AppUser appUser, UserCRUDType cRUDType) {
+    public JPanelUserAddressCRUD(AppUser appUser, UserCRUDType cRUDType, JPanelUserCrud parent) {
         initComponents();
-        this.appUser = appUser == null ? new AppUser() : appUser;
+        this.appUser = appUser;
         this.cRUDType = cRUDType;
+        this.parent = parent;
         initCustomCompoents();
     }
 
@@ -66,7 +69,7 @@ public class JPanelUserAddressCRUD extends javax.swing.JPanel {
         jLabel4 = new javax.swing.JLabel();
         jTextFieldStreetNumber = new javax.swing.JTextField();
         jSeparator1 = new javax.swing.JSeparator();
-        jButtonSaveUser = new javax.swing.JButton();
+        jButtonNextStep = new javax.swing.JButton();
         jButtonCancel = new javax.swing.JButton();
         CountryFieldErrorLabel = new javax.swing.JLabel();
         CityFieldErrorLabel = new javax.swing.JLabel();
@@ -113,14 +116,14 @@ public class JPanelUserAddressCRUD extends javax.swing.JPanel {
             }
         });
 
-        jButtonSaveUser.setText("Next Step");
-        jButtonSaveUser.setEnabled(false);
-        jButtonSaveUser.setMaximumSize(new java.awt.Dimension(100, 25));
-        jButtonSaveUser.setMinimumSize(new java.awt.Dimension(100, 25));
-        jButtonSaveUser.setPreferredSize(new java.awt.Dimension(100, 25));
-        jButtonSaveUser.addActionListener(new java.awt.event.ActionListener() {
+        jButtonNextStep.setText("Next Step");
+        jButtonNextStep.setEnabled(false);
+        jButtonNextStep.setMaximumSize(new java.awt.Dimension(100, 25));
+        jButtonNextStep.setMinimumSize(new java.awt.Dimension(100, 25));
+        jButtonNextStep.setPreferredSize(new java.awt.Dimension(100, 25));
+        jButtonNextStep.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonSaveUserActionPerformed(evt);
+                jButtonNextStepActionPerformed(evt);
             }
         });
 
@@ -150,6 +153,11 @@ public class JPanelUserAddressCRUD extends javax.swing.JPanel {
         jButtonBack.setMaximumSize(new java.awt.Dimension(100, 25));
         jButtonBack.setMinimumSize(new java.awt.Dimension(100, 25));
         jButtonBack.setPreferredSize(new java.awt.Dimension(100, 25));
+        jButtonBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBackActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -170,13 +178,13 @@ public class JPanelUserAddressCRUD extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
                             .addComponent(jLabel1))
-                        .addGap(18, 18, 18)
+                        .addGap(49, 49, 49)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jTextFieldCity)
                             .addComponent(jTextFieldCountry)))
                     .addComponent(jSeparator1)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 113, Short.MAX_VALUE)
+                        .addGap(0, 114, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(StreetNumberFieldErrorLabel, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(AddressFieldErrorLabel, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -187,7 +195,7 @@ public class JPanelUserAddressCRUD extends javax.swing.JPanel {
                                 .addGap(18, 18, 18)
                                 .addComponent(jButtonBack, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(jButtonSaveUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jButtonNextStep, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(jButtonSave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap())
@@ -222,7 +230,7 @@ public class JPanelUserAddressCRUD extends javax.swing.JPanel {
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 285, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonSaveUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonNextStep, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonCancel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonSave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonBack, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -234,9 +242,9 @@ public class JPanelUserAddressCRUD extends javax.swing.JPanel {
         SwingUtilities.getWindowAncestor(this).setVisible(false);
     }//GEN-LAST:event_jButtonCancelActionPerformed
 
-    private void jButtonSaveUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSaveUserActionPerformed
+    private void jButtonNextStepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNextStepActionPerformed
 
-    }//GEN-LAST:event_jButtonSaveUserActionPerformed
+    }//GEN-LAST:event_jButtonNextStepActionPerformed
 
     private void jTextFieldCountryKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldCountryKeyReleased
         if (formSubmitetedOnce) {
@@ -269,23 +277,21 @@ public class JPanelUserAddressCRUD extends javax.swing.JPanel {
             formValid = validateAddress();
         } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "System Error", JOptionPane.ERROR_MESSAGE);
-//            JOptionPane.showMessageDialog(null, "System Error. Please contact your administator at \"Help Section\"", "System Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         if (!formValid) {
-//            JOptionPane.showMessageDialog(null, "Form is not valid! Please check all fields and submit form again.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
+
         Address address = appUser.getAddress() == null ? new Address() : appUser.getAddress();
 
         address.setCountry(new Country().setName(jTextFieldCountry.getText().trim()));
         address.setCity(jTextFieldCity.getText().trim());
         address.setPostalCode(jTextFieldAddress.getText().trim());
         address.setStreetNumber(jTextFieldStreetNumber.getText().trim());
-        
-                switch (cRUDType) {
+
+        switch (cRUDType) {
             case Add:
             case Edit: {
                 try {
@@ -301,8 +307,12 @@ public class JPanelUserAddressCRUD extends javax.swing.JPanel {
         }
 
         JOptionPane.showMessageDialog(null, "User saved successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
-        
+        parent.closeCrudWindow();
     }//GEN-LAST:event_jButtonSaveActionPerformed
+
+    private void jButtonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBackActionPerformed
+        parent.goToBasicInfoStep();
+    }//GEN-LAST:event_jButtonBackActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -312,8 +322,8 @@ public class JPanelUserAddressCRUD extends javax.swing.JPanel {
     private javax.swing.JLabel StreetNumberFieldErrorLabel;
     private javax.swing.JButton jButtonBack;
     private javax.swing.JButton jButtonCancel;
+    private javax.swing.JButton jButtonNextStep;
     private javax.swing.JButton jButtonSave;
-    private javax.swing.JButton jButtonSaveUser;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -373,7 +383,7 @@ public class JPanelUserAddressCRUD extends javax.swing.JPanel {
             case Add:
                 break;
             case View:
-                jButtonSaveUser.setEnabled(false);
+                jButtonSave.setEnabled(false);
                 Arrays.asList(jTextFieldCountry, jTextFieldCity, jTextFieldAddress, jTextFieldStreetNumber)
                         .stream()
                         .forEach((field) -> field.setEditable(false));

@@ -543,8 +543,14 @@ public class JPanelUserAll extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        int selectedIndex = jTable1.getSelectedRow();
+        if (selectedIndex == -1) {
+            JOptionPane.showMessageDialog(null, "Please select user!!!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         JDialog dialog = new JDialog(null, "Ban Confrmation", Dialog.ModalityType.APPLICATION_MODAL);
-        JPanel panel = new JPanelBanConfirmation();
+        JPanel panel = new JPanelBanConfirmation(((UserTableModel) jTable1.getModel()).getUserAt(selectedIndex));
         dialog.add(panel);
         dialog.setResizable(false);
         dialog.pack();
@@ -561,7 +567,7 @@ public class JPanelUserAll extends javax.swing.JPanel {
         }
 
         JDialog dialog = new JDialog(null, "User Details", Dialog.ModalityType.APPLICATION_MODAL);
-        JPanel panel = new JPanelUserCRUD(((UserTableModel) jTable1.getModel()).getUserAt(selectedIndex), UserCRUDType.View);
+        JPanel panel = new JPanelUserCrud(((UserTableModel) jTable1.getModel()).getUserAt(selectedIndex), UserCRUDType.View);
         dialog.add(panel);
         dialog.setResizable(false);
         dialog.pack();
@@ -578,7 +584,7 @@ public class JPanelUserAll extends javax.swing.JPanel {
         }
 
         JDialog dialog = new JDialog(null, "User Details", Dialog.ModalityType.APPLICATION_MODAL);
-        JPanel panel = new JPanelUserCRUD(((UserTableModel) jTable1.getModel()).getUserAt(selectedIndex), UserCRUDType.Edit);
+        JPanel panel = new JPanelUserCrud(((UserTableModel) jTable1.getModel()).getUserAt(selectedIndex), UserCRUDType.Edit);
         dialog.add(panel);
         dialog.setResizable(false);
         dialog.pack();
@@ -595,7 +601,7 @@ public class JPanelUserAll extends javax.swing.JPanel {
             }
 
             JDialog dialog = new JDialog(null, "User Details", Dialog.ModalityType.APPLICATION_MODAL);
-            JPanel panel = new JPanelUserCRUD(((UserTableModel) jTable1.getModel()).getUserAt(selectedIndex), UserCRUDType.View);
+            JPanel panel = new JPanelUserCrud(((UserTableModel) jTable1.getModel()).getUserAt(selectedIndex), UserCRUDType.View);
             dialog.add(panel);
             dialog.setResizable(false);
             dialog.pack();

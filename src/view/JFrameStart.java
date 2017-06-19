@@ -24,9 +24,11 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeSelectionModel;
 import model.UserTableModel;
 import view.chat.JPanelGlobalMessage;
+import view.user.JPanelBanConfirmation;
 import view.user.JPanelBanUser;
 import view.user.JPanelUserAll;
-import view.user.JPanelUserCRUD;
+import view.user.JPanelUserBasicInfoCRUD;
+import view.user.JPanelUserCrud;
 
 /**
  *
@@ -53,7 +55,7 @@ public class JFrameStart extends javax.swing.JFrame implements TreeSelectionList
     private void initComponents() {
 
         jPopupMenu1 = new javax.swing.JPopupMenu();
-        jMenuViewUser = new javax.swing.JMenuItem();
+        jMenuItemView = new javax.swing.JMenuItem();
         jMenuItemEditUser = new javax.swing.JMenuItem();
         jSeparator4 = new javax.swing.JPopupMenu.Separator();
         jMenuItemBanUser = new javax.swing.JMenuItem();
@@ -111,13 +113,13 @@ public class JFrameStart extends javax.swing.JFrame implements TreeSelectionList
         jMenu4 = new javax.swing.JMenu();
         jMenuItem7 = new javax.swing.JMenuItem();
 
-        jMenuViewUser.setText("View User...");
-        jMenuViewUser.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItemView.setText("View User");
+        jMenuItemView.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuViewUserActionPerformed(evt);
+                jMenuItemViewActionPerformed(evt);
             }
         });
-        jPopupMenu1.add(jMenuViewUser);
+        jPopupMenu1.add(jMenuItemView);
 
         jMenuItemEditUser.setText("Edit User...");
         jMenuItemEditUser.addActionListener(new java.awt.event.ActionListener() {
@@ -137,6 +139,11 @@ public class JFrameStart extends javax.swing.JFrame implements TreeSelectionList
         jPopupMenu1.add(jMenuItemBanUser);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jScrollPane1.setPreferredSize(new java.awt.Dimension(220, 322));
 
@@ -444,6 +451,7 @@ public class JFrameStart extends javax.swing.JFrame implements TreeSelectionList
         jMenu1.add(jSeparator1);
 
         jMenuItem3.setText("Start Application");
+        jMenuItem3.setEnabled(false);
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem3ActionPerformed(evt);
@@ -452,6 +460,7 @@ public class JFrameStart extends javax.swing.JFrame implements TreeSelectionList
         jMenu1.add(jMenuItem3);
 
         jMenuItem4.setText("Abort Application");
+        jMenuItem4.setEnabled(false);
         jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem4ActionPerformed(evt);
@@ -461,6 +470,11 @@ public class JFrameStart extends javax.swing.JFrame implements TreeSelectionList
         jMenu1.add(jSeparator2);
 
         jMenuItem2.setText("Exit");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem2);
 
         jMenuBar1.add(jMenu1);
@@ -519,7 +533,7 @@ public class JFrameStart extends javax.swing.JFrame implements TreeSelectionList
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         JDialog dialog = new JDialog(this, "General Settings", Dialog.ModalityType.MODELESS);
-        JPanelUserCRUD panel = new JPanelUserCRUD(null, UserCRUDType.Add);
+        JPanelUserCrud panel = new JPanelUserCrud(null, UserCRUDType.Add);
         dialog.add(panel);
         dialog.setResizable(false);
         dialog.pack();
@@ -621,7 +635,7 @@ public class JFrameStart extends javax.swing.JFrame implements TreeSelectionList
         AppUser nodeInfo = (AppUser) node.getUserObject();
 
         JDialog dialog = new JDialog(null, "User Details", Dialog.ModalityType.APPLICATION_MODAL);
-        JPanel panel = new JPanelUserCRUD(nodeInfo, UserCRUDType.Edit);
+        JPanel panel = new JPanelUserCrud(nodeInfo, UserCRUDType.Edit);
         dialog.add(panel);
         dialog.setResizable(false);
         dialog.pack();
@@ -629,26 +643,52 @@ public class JFrameStart extends javax.swing.JFrame implements TreeSelectionList
         dialog.setVisible(true);
     }//GEN-LAST:event_jMenuItemEditUserActionPerformed
 
-    private void jMenuViewUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuViewUserActionPerformed
+    private void jMenuViewUserActionPerformed(java.awt.event.ActionEvent evt) {                                              
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) jTree1.getLastSelectedPathComponent();
         AppUser nodeInfo = (AppUser) node.getUserObject();
 
         JDialog dialog = new JDialog(null, "User Details", Dialog.ModalityType.APPLICATION_MODAL);
-        JPanel panel = new JPanelUserCRUD(nodeInfo, UserCRUDType.View);
+        JPanel panel = new JPanelUserCrud(nodeInfo, UserCRUDType.View);
         dialog.add(panel);
         dialog.setResizable(false);
         dialog.pack();
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
-    }//GEN-LAST:event_jMenuViewUserActionPerformed
+    }                                             
 
     private void jMenuItemBanUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemBanUserActionPerformed
-        // TODO add your handling code here:
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode) jTree1.getLastSelectedPathComponent();
+        AppUser nodeInfo = (AppUser) node.getUserObject();
+
+        JDialog dialog = new JDialog(null, "Ban Details", Dialog.ModalityType.APPLICATION_MODAL);
+        JPanel panel = new JPanelBanConfirmation(nodeInfo);
+        dialog.add(panel);
+        dialog.setResizable(false);
+        dialog.pack();
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
     }//GEN-LAST:event_jMenuItemBanUserActionPerformed
 
-    private void jMenuViewUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuViewUserActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuViewUserActionPerformed
+    private void jMenuItemViewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemViewActionPerformed
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode) jTree1.getLastSelectedPathComponent();
+        AppUser nodeInfo = (AppUser) node.getUserObject();
+
+        JDialog dialog = new JDialog(null, "User Details", Dialog.ModalityType.APPLICATION_MODAL);
+        JPanel panel = new JPanelUserCrud(nodeInfo, UserCRUDType.View);
+        dialog.add(panel);
+        dialog.setResizable(false);
+        dialog.pack();
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+    }//GEN-LAST:event_jMenuItemViewActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        closeApplication();
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        closeApplication();
+    }//GEN-LAST:event_formWindowClosing
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -687,7 +727,7 @@ public class JFrameStart extends javax.swing.JFrame implements TreeSelectionList
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItemBanUser;
     private javax.swing.JMenuItem jMenuItemEditUser;
-    private javax.swing.JMenuItem jMenuViewUser;
+    private javax.swing.JMenuItem jMenuItemView;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
@@ -763,5 +803,13 @@ public class JFrameStart extends javax.swing.JFrame implements TreeSelectionList
         jLabelNewUsers.setText("<html>8 New Users<br/>This Month</html>");
         jLabelActiveUsers.setText("<html>" + communication.Communication.activeUsers.size() + " Users<br/>Online</html>");
         jLabelNewNotifications.setText("<html>3 New<br/>Notifications</html>");
+    }
+
+    private void closeApplication() {
+        int response = JOptionPane.showConfirmDialog(this, "Are you sure you want to close application?", "Exit", JOptionPane.YES_NO_CANCEL_OPTION);
+
+        if (response == JOptionPane.YES_OPTION) {
+            System.exit(0);
+        }
     }
 }
