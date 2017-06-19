@@ -94,12 +94,13 @@ public class UserFilter {
         this.countryList = countryList;
     }
 
-    public void addCountyFilter(Country country) {
-        this.countryList.add(country);
+    public void addCountyFilter(List<Country> countryList) {
+        this.countryList.clear();
+        this.countryList.addAll(countryList);
     }
 
-    public void removeCountryFilter(Country country) {
-        this.countryList.remove(country);
+    public void removeCountryFilter(List<Country> countryList) {
+        this.countryList.removeAll(countryList);
     }
 
     public List<String> getCityList() {

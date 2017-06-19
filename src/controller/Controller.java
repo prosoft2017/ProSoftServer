@@ -8,7 +8,10 @@ package controller;
 import communication.Communication;
 import communication.ReciveMessageThread;
 import domain.user.AppUser;
+import domain.user.Country;
 import java.io.IOException;
+import java.util.List;
+import so.user.SOAllCountries;
 import so.user.SOValidateUser;
 
 /**
@@ -49,5 +52,11 @@ public class Controller {
         for (ReciveMessageThread activeUserThread : Communication.activeUsers) {
             activeUserThread.sendMessageToThisUser(message);
         }
+    }
+    
+    public List<Country> getAllAvailableCountries() throws Exception {
+        SOAllCountries allCountries = new SOAllCountries();
+        allCountries.executeSO(null);
+        return allCountries.getAllCountries();
     }
 }

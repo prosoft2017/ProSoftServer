@@ -6,6 +6,7 @@
 package model;
 
 import domain.user.AppUser;
+import domain.user.Country;
 import domain.user.StatusType;
 import filter.user.UserFilter;
 import java.util.ArrayList;
@@ -108,6 +109,12 @@ public class UserTableModel extends AbstractTableModel {
 
         return doAllFilters(offset);
     }
+    
+    public int addCountryFilter(List<Country>countryList, int offset) {
+        filter.addCountyFilter(countryList);
+        
+        return doAllFilters(offset);
+    }
 
     public int removeStatusFilter(StatusType statusType, int offset) {
         filter.removeStatusType(statusType);
@@ -132,6 +139,10 @@ public class UserTableModel extends AbstractTableModel {
         changePage(1, offset);
 
         return (int) Math.ceil(filteredListOfUsers.size() / (double) (offset));
+    }
+
+    public List<Country> getCountryFilter() {
+        return filter.getCountryList();
     }
 
 }

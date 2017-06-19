@@ -11,8 +11,10 @@ import domain.user.AppUser;
 import domain.PaginationOption;
 import domain.user.StatusType;
 import domain.UserCRUDType;
+import domain.user.Country;
 import java.awt.Dialog;
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.JCheckBox;
@@ -698,7 +700,14 @@ public class JPanelUserAll extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButtonCountryFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCountryFilterActionPerformed
-        // TODO add your handling code here:
+        UserTableModel tableModel = (UserTableModel) jTable1.getModel();
+        JDialog dialog = new JDialog(null, "Country Filter", Dialog.ModalityType.APPLICATION_MODAL);
+        JPanel panel = new JPanelFilterCountry(this, tableModel.getCountryFilter());
+        dialog.add(panel);
+        dialog.setResizable(false);
+        dialog.pack();
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
     }//GEN-LAST:event_jButtonCountryFilterActionPerformed
 
 
@@ -765,6 +774,15 @@ public class JPanelUserAll extends javax.swing.JPanel {
 
         jTable1.setModel(new UserTableModel(userList, offset));
         maxPages = (int) Math.ceil(userList.size() / (double) (offset));
+
+        jTextFieldMaxPage.setText("" + maxPages);
+        jTextFieldCurrentPage.setText("" + page);
+    }
+
+    void setCountryFilter(List<Country> filteredCountries) {
+        UserTableModel tableModel = (UserTableModel) jTable1.getModel();
+        maxPages = tableModel.addCountryFilter(filteredCountries, offset);
+        page = 1;
 
         jTextFieldMaxPage.setText("" + maxPages);
         jTextFieldCurrentPage.setText("" + page);
