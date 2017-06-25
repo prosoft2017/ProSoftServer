@@ -8,8 +8,11 @@ package view.user;
 import controller.Controller;
 import domain.user.AppUser;
 import domain.UserCRUDType;
+import domain.user.StatusType;
+import domain.user.UserTitle;
 import java.awt.Color;
 import java.lang.reflect.Field;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -314,7 +317,7 @@ public class JPanelUserBasicInfoCRUD extends javax.swing.JPanel {
         appUser.setLastname(jTextFieldLastname.getText().trim());
         appUser.setUsername(jTextFieldUsername.getText().trim());
         appUser.setEmail(jTextFieldEmail.getText().trim());
-        if (cRUDType == UserCRUDType.Add) {
+        if (cRUDType == UserCRUDType.ADD) {
             appUser.setPassword(jPasswordField.getText().trim());
         }
         appUser.setImagePath(jTextFieldImagePath.getText().trim());
@@ -485,7 +488,7 @@ public class JPanelUserBasicInfoCRUD extends javax.swing.JPanel {
     }
 
     private boolean validatePassword() {
-        if (cRUDType == UserCRUDType.Add) {
+        if (cRUDType == UserCRUDType.ADD) {
             String password = jPasswordField.getText();
             String passwordRepeate = jPasswordFieldRepeat.getText();
 
@@ -534,14 +537,19 @@ public class JPanelUserBasicInfoCRUD extends javax.swing.JPanel {
 
     private void initCustomCompoents() {
         switch (cRUDType) {
-            case Add:
+            case ADD:
+                appUser.setTitle(UserTitle.ROLE_USER);
+                appUser.setStatus(StatusType.ACTIVE);
+                appUser.setLastActive(LocalDate.now());
+                setUpFields();
                 break;
-            case View:
+            case VIEW:
                 Arrays.asList(jTextFieldFirstname, jTextFieldLastname, jTextFieldUsername, jTextFieldEmail, jTextFieldImagePath, jPasswordField, jPasswordFieldRepeat)
                         .stream()
                         .forEach((field) -> field.setEditable(false));
-            case Edit:
+            case EDIT:
                 formSubmitetedOnce = true;
+                jTextFieldUsername.setEditable(false);
                 jPasswordField.setEditable(false);
                 jPasswordFieldRepeat.setEditable(false);
                 jPasswordField.setText("password");

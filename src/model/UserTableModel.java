@@ -9,6 +9,7 @@ import domain.user.AppUser;
 import domain.user.Country;
 import domain.user.StatusType;
 import filter.user.UserFilter;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
@@ -87,7 +88,7 @@ public class UserTableModel extends AbstractTableModel {
 
     public int filterByHint(String hint, int offset) {
         filter.setSearchString(hint);
-        
+
         return doAllFilters(offset);
     }
 
@@ -109,10 +110,10 @@ public class UserTableModel extends AbstractTableModel {
 
         return doAllFilters(offset);
     }
-    
-    public int addCountryFilter(List<Country>countryList, int offset) {
+
+    public int addCountryFilter(List<Country> countryList, int offset) {
         filter.addCountyFilter(countryList);
-        
+
         return doAllFilters(offset);
     }
 
@@ -143,6 +144,30 @@ public class UserTableModel extends AbstractTableModel {
 
     public List<Country> getCountryFilter() {
         return filter.getCountryList();
+    }
+
+    public int addDateFromFilter(LocalDate dateFrom, int offset) {
+        filter.setDataActiveFrom(dateFrom);
+
+        return doAllFilters(offset);
+    }
+
+    public int addDateToFilter(LocalDate dateTo, int offset) {
+        filter.setDataActiveTo(dateTo);
+
+        return doAllFilters(offset);
+    }
+
+    public int removeDateToFilter(int offset) {
+        filter.setDataActiveTo(null);
+
+        return doAllFilters(offset);
+    }
+
+    public int removeDateFromFilter(int offset) {
+        filter.setDataActiveFrom(null);
+
+        return doAllFilters(offset);
     }
 
 }

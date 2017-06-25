@@ -13,11 +13,10 @@ import domain.user.StatusType;
 import domain.UserCRUDType;
 import domain.user.Country;
 import java.awt.Dialog;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.List;
-import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -63,18 +62,18 @@ public class JPanelUserAll extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         jButton4 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jCheckBox2 = new javax.swing.JCheckBox();
-        jCheckBox3 = new javax.swing.JCheckBox();
+        jCheckBoxRoleUser = new javax.swing.JCheckBox();
+        jCheckBoxRoleAdmin = new javax.swing.JCheckBox();
+        jCheckBoxRoleSuperAdmin = new javax.swing.JCheckBox();
         jSeparator2 = new javax.swing.JSeparator();
         jLabel3 = new javax.swing.JLabel();
-        jButton3 = new javax.swing.JButton();
+        jButtonBanUser = new javax.swing.JButton();
         jSeparator3 = new javax.swing.JSeparator();
         jLabel4 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        jComboBoxChangeStatusQuick = new javax.swing.JComboBox<>();
         jSeparator6 = new javax.swing.JSeparator();
         jLabel10 = new javax.swing.JLabel();
-        jButton5 = new javax.swing.JButton();
+        jButtonAddTaskQuick = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jTextFieldDateFilterFrom = new javax.swing.JTextField();
@@ -184,20 +183,24 @@ public class JPanelUserAll extends javax.swing.JPanel {
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Quick Options\n"));
 
-        jCheckBox1.setText("App User");
+        jCheckBoxRoleUser.setText("App User");
+        jCheckBoxRoleUser.setEnabled(false);
 
-        jCheckBox2.setText("Admin");
+        jCheckBoxRoleAdmin.setText("Admin");
+        jCheckBoxRoleAdmin.setEnabled(false);
 
-        jCheckBox3.setText("Super Admin");
+        jCheckBoxRoleSuperAdmin.setText("Super Admin");
+        jCheckBoxRoleSuperAdmin.setEnabled(false);
 
         jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
         jLabel3.setText("You can change state of user here.");
 
-        jButton3.setText("Ban user");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        jButtonBanUser.setText("Ban user");
+        jButtonBanUser.setEnabled(false);
+        jButtonBanUser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                jButtonBanUserActionPerformed(evt);
             }
         });
 
@@ -205,16 +208,18 @@ public class JPanelUserAll extends javax.swing.JPanel {
 
         jLabel4.setText("Execute ban operation on user.");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Active", "Pending", "Locked" }));
+        jComboBoxChangeStatusQuick.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Active", "Pending", "Locked" }));
+        jComboBoxChangeStatusQuick.setEnabled(false);
 
         jSeparator6.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
         jLabel10.setText("Add tast for selected user");
 
-        jButton5.setText("Add Task");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        jButtonAddTaskQuick.setText("Add Task");
+        jButtonAddTaskQuick.setEnabled(false);
+        jButtonAddTaskQuick.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                jButtonAddTaskQuickActionPerformed(evt);
             }
         });
 
@@ -225,27 +230,27 @@ public class JPanelUserAll extends javax.swing.JPanel {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jCheckBox1)
-                    .addComponent(jCheckBox2)
-                    .addComponent(jCheckBox3))
+                    .addComponent(jCheckBoxRoleUser)
+                    .addComponent(jCheckBoxRoleAdmin)
+                    .addComponent(jCheckBoxRoleSuperAdmin))
                 .addGap(41, 41, 41)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jComboBoxChangeStatusQuick, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel10)
-                    .addComponent(jButton5))
+                    .addComponent(jButtonAddTaskQuick))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4)
-                    .addComponent(jButton3))
+                    .addComponent(jButtonBanUser))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -256,15 +261,15 @@ public class JPanelUserAll extends javax.swing.JPanel {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel10)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton5))
+                        .addComponent(jButtonAddTaskQuick))
                     .addComponent(jSeparator6)
                     .addComponent(jSeparator2)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jCheckBox1)
+                        .addComponent(jCheckBoxRoleUser)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jCheckBox2)
+                        .addComponent(jCheckBoxRoleAdmin)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jCheckBox3)
+                        .addComponent(jCheckBoxRoleSuperAdmin)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -272,8 +277,8 @@ public class JPanelUserAll extends javax.swing.JPanel {
                             .addComponent(jLabel4))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jButtonBanUser, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jComboBoxChangeStatusQuick, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jSeparator3, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
         );
@@ -301,9 +306,21 @@ public class JPanelUserAll extends javax.swing.JPanel {
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Advanced Search "));
 
-        jLabel6.setText("Activate user");
+        jLabel6.setText("Activate user (yyyy.mm.dd)");
+
+        jTextFieldDateFilterFrom.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextFieldDateFilterFromKeyReleased(evt);
+            }
+        });
 
         jLabel7.setText("-");
+
+        jTextFieldDateFilterTo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextFieldDateFilterToKeyReleased(evt);
+            }
+        });
 
         jSeparator4.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
@@ -352,11 +369,13 @@ public class JPanelUserAll extends javax.swing.JPanel {
         });
 
         jButtonCityFilter.setText("City");
+        jButtonCityFilter.setEnabled(false);
         jButtonCityFilter.setMaximumSize(new java.awt.Dimension(80, 25));
         jButtonCityFilter.setMinimumSize(new java.awt.Dimension(80, 25));
         jButtonCityFilter.setPreferredSize(new java.awt.Dimension(80, 25));
 
         jButton11.setText("Filter");
+        jButton11.setEnabled(false);
         jButton11.setMaximumSize(new java.awt.Dimension(80, 25));
         jButton11.setMinimumSize(new java.awt.Dimension(80, 25));
         jButton11.setPreferredSize(new java.awt.Dimension(80, 25));
@@ -544,7 +563,7 @@ public class JPanelUserAll extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void jButtonBanUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBanUserActionPerformed
         int selectedIndex = jTable1.getSelectedRow();
         if (selectedIndex == -1) {
             JOptionPane.showMessageDialog(null, "Please select user!!!", "Error", JOptionPane.ERROR_MESSAGE);
@@ -558,7 +577,7 @@ public class JPanelUserAll extends javax.swing.JPanel {
         dialog.pack();
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_jButtonBanUserActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         int selectedIndex = jTable1.getSelectedRow();
@@ -569,7 +588,7 @@ public class JPanelUserAll extends javax.swing.JPanel {
         }
 
         JDialog dialog = new JDialog(null, "User Details", Dialog.ModalityType.APPLICATION_MODAL);
-        JPanel panel = new JPanelUserCrud(((UserTableModel) jTable1.getModel()).getUserAt(selectedIndex), UserCRUDType.View);
+        JPanel panel = new JPanelUserCrud(((UserTableModel) jTable1.getModel()).getUserAt(selectedIndex), UserCRUDType.VIEW);
         dialog.add(panel);
         dialog.setResizable(false);
         dialog.pack();
@@ -586,7 +605,7 @@ public class JPanelUserAll extends javax.swing.JPanel {
         }
 
         JDialog dialog = new JDialog(null, "User Details", Dialog.ModalityType.APPLICATION_MODAL);
-        JPanel panel = new JPanelUserCrud(((UserTableModel) jTable1.getModel()).getUserAt(selectedIndex), UserCRUDType.Edit);
+        JPanel panel = new JPanelUserCrud(((UserTableModel) jTable1.getModel()).getUserAt(selectedIndex), UserCRUDType.EDIT);
         dialog.add(panel);
         dialog.setResizable(false);
         dialog.pack();
@@ -595,15 +614,17 @@ public class JPanelUserAll extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
-        if (evt.getClickCount() == 2) {
-            int selectedIndex = jTable1.getSelectedRow();
-            if (selectedIndex < 0) {
-                JOptionPane.showMessageDialog(null, "Please select user to edit!", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
+        int selectedIndex = jTable1.getSelectedRow();
+        if (selectedIndex < 0) {
+            return;
+        }
+        AppUser appUser = ((UserTableModel) jTable1.getModel()).getUserAt(selectedIndex);
 
+        activeButtonsForUser(appUser);
+
+        if (evt.getClickCount() == 2) {
             JDialog dialog = new JDialog(null, "User Details", Dialog.ModalityType.APPLICATION_MODAL);
-            JPanel panel = new JPanelUserCrud(((UserTableModel) jTable1.getModel()).getUserAt(selectedIndex), UserCRUDType.View);
+            JPanel panel = new JPanelUserCrud(appUser, UserCRUDType.VIEW);
             dialog.add(panel);
             dialog.setResizable(false);
             dialog.pack();
@@ -635,6 +656,7 @@ public class JPanelUserAll extends javax.swing.JPanel {
 
         jTextFieldMaxPage.setText("" + maxPages);
         jTextFieldCurrentPage.setText("" + page);
+        disableQuickButtonsForUser();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButtonResetAllFiltersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonResetAllFiltersActionPerformed
@@ -651,33 +673,37 @@ public class JPanelUserAll extends javax.swing.JPanel {
         Arrays.asList(jCheckBoxBanedFilter, jCheckBoxStatusActivate, jCheckBoxStatusPending, jCheckBoxStatusLocked)
                 .stream()
                 .forEach((cb) -> cb.setSelected(false));
+        disableQuickButtonsForUser();
     }//GEN-LAST:event_jButtonResetAllFiltersActionPerformed
 
     private void jCheckBoxStatusActivateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxStatusActivateActionPerformed
         UserTableModel tableModel = (UserTableModel) jTable1.getModel();
-        maxPages = jCheckBoxStatusActivate.isSelected() ? tableModel.addStatusFilter(StatusType.Active, offset) : tableModel.removeStatusFilter(StatusType.Active, offset);
+        maxPages = jCheckBoxStatusActivate.isSelected() ? tableModel.addStatusFilter(StatusType.ACTIVE, offset) : tableModel.removeStatusFilter(StatusType.ACTIVE, offset);
         page = 1;
 
         jTextFieldMaxPage.setText("" + maxPages);
         jTextFieldCurrentPage.setText("" + page);
+        disableQuickButtonsForUser();
     }//GEN-LAST:event_jCheckBoxStatusActivateActionPerformed
 
     private void jCheckBoxStatusLockedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxStatusLockedActionPerformed
         UserTableModel tableModel = (UserTableModel) jTable1.getModel();
-        maxPages = jCheckBoxStatusLocked.isSelected() ? tableModel.addStatusFilter(StatusType.Locked, offset) : tableModel.removeStatusFilter(StatusType.Locked, offset);
+        maxPages = jCheckBoxStatusLocked.isSelected() ? tableModel.addStatusFilter(StatusType.LOCKED, offset) : tableModel.removeStatusFilter(StatusType.LOCKED, offset);
         page = 1;
 
         jTextFieldMaxPage.setText("" + maxPages);
         jTextFieldCurrentPage.setText("" + page);
+        disableQuickButtonsForUser();
     }//GEN-LAST:event_jCheckBoxStatusLockedActionPerformed
 
     private void jCheckBoxStatusPendingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxStatusPendingActionPerformed
         UserTableModel tableModel = (UserTableModel) jTable1.getModel();
-        maxPages = jCheckBoxStatusPending.isSelected() ? tableModel.addStatusFilter(StatusType.Pending, offset) : tableModel.removeStatusFilter(StatusType.Pending, offset);
+        maxPages = jCheckBoxStatusPending.isSelected() ? tableModel.addStatusFilter(StatusType.PENDING, offset) : tableModel.removeStatusFilter(StatusType.PENDING, offset);
         page = 1;
 
         jTextFieldMaxPage.setText("" + maxPages);
         jTextFieldCurrentPage.setText("" + page);
+        disableQuickButtonsForUser();
     }//GEN-LAST:event_jCheckBoxStatusPendingActionPerformed
 
     private void jCheckBoxBanedFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxBanedFilterActionPerformed
@@ -687,9 +713,10 @@ public class JPanelUserAll extends javax.swing.JPanel {
 
         jTextFieldMaxPage.setText("" + maxPages);
         jTextFieldCurrentPage.setText("" + page);
+        disableQuickButtonsForUser();
     }//GEN-LAST:event_jCheckBoxBanedFilterActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+    private void jButtonAddTaskQuickActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddTaskQuickActionPerformed
         int selectedIndex = jTable1.getSelectedRow();
         if (selectedIndex < 0) {
             JOptionPane.showMessageDialog(null, "Please select user to manage their tasks!", ConstantMessages.ERROR_MSG_TITLE, JOptionPane.ERROR_MESSAGE);
@@ -703,7 +730,7 @@ public class JPanelUserAll extends javax.swing.JPanel {
         dialog.pack();
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
-    }//GEN-LAST:event_jButton5ActionPerformed
+    }//GEN-LAST:event_jButtonAddTaskQuickActionPerformed
 
     private void jButtonCountryFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCountryFilterActionPerformed
         UserTableModel tableModel = (UserTableModel) jTable1.getModel();
@@ -716,14 +743,42 @@ public class JPanelUserAll extends javax.swing.JPanel {
         dialog.setVisible(true);
     }//GEN-LAST:event_jButtonCountryFilterActionPerformed
 
+    private void jTextFieldDateFilterFromKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldDateFilterFromKeyReleased
+        UserTableModel tableModel = (UserTableModel) jTable1.getModel();
+        try {
+            LocalDate dateFrom = LocalDate.parse(jTextFieldDateFilterFrom.getText().trim(), controller.Controller.getController().formatter);
+            maxPages = tableModel.addDateFromFilter(dateFrom, offset);
+        } catch (DateTimeParseException ex) {
+            maxPages = tableModel.removeDateFromFilter(offset);
+        }
+
+        jTextFieldMaxPage.setText("" + maxPages);
+        jTextFieldCurrentPage.setText("" + page);
+        disableQuickButtonsForUser();
+    }//GEN-LAST:event_jTextFieldDateFilterFromKeyReleased
+
+    private void jTextFieldDateFilterToKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldDateFilterToKeyReleased
+        UserTableModel tableModel = (UserTableModel) jTable1.getModel();
+        try {
+            LocalDate dateTo = LocalDate.parse(jTextFieldDateFilterTo.getText().trim(), controller.Controller.getController().formatter);
+            maxPages = tableModel.addDateToFilter(dateTo, offset);
+        } catch (DateTimeParseException ex) {
+            maxPages = tableModel.removeDateToFilter(offset);
+        }
+
+        jTextFieldMaxPage.setText("" + maxPages);
+        jTextFieldCurrentPage.setText("" + page);
+        disableQuickButtonsForUser();
+    }//GEN-LAST:event_jTextFieldDateFilterToKeyReleased
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButtonAddTaskQuick;
+    private javax.swing.JButton jButtonBanUser;
     private javax.swing.JButton jButtonCityFilter;
     private javax.swing.JButton jButtonCountryFilter;
     private javax.swing.JButton jButtonFirstPage;
@@ -731,14 +786,14 @@ public class JPanelUserAll extends javax.swing.JPanel {
     private javax.swing.JButton jButtonNextPage;
     private javax.swing.JButton jButtonPreviousPage;
     private javax.swing.JButton jButtonResetAllFilters;
-    private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JCheckBox jCheckBox2;
-    private javax.swing.JCheckBox jCheckBox3;
     private javax.swing.JCheckBox jCheckBoxBanedFilter;
+    private javax.swing.JCheckBox jCheckBoxRoleAdmin;
+    private javax.swing.JCheckBox jCheckBoxRoleSuperAdmin;
+    private javax.swing.JCheckBox jCheckBoxRoleUser;
     private javax.swing.JCheckBox jCheckBoxStatusActivate;
     private javax.swing.JCheckBox jCheckBoxStatusLocked;
     private javax.swing.JCheckBox jCheckBoxStatusPending;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> jComboBoxChangeStatusQuick;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
@@ -792,6 +847,51 @@ public class JPanelUserAll extends javax.swing.JPanel {
 
         jTextFieldMaxPage.setText("" + maxPages);
         jTextFieldCurrentPage.setText("" + page);
+        disableQuickButtonsForUser();
+    }
+
+    private void activeButtonsForUser(AppUser appUser) {
+        jCheckBoxRoleSuperAdmin.setSelected(false);
+        jCheckBoxRoleAdmin.setSelected(false);
+        jCheckBoxRoleUser.setSelected(false);
+        jComboBoxChangeStatusQuick.setEnabled(true);
+        jButtonAddTaskQuick.setEnabled(true);
+        jButtonBanUser.setEnabled(!appUser.isBaned());
+        jCheckBoxRoleUser.setEnabled(true);
+        jCheckBoxRoleAdmin.setEnabled(true);
+        jCheckBoxRoleSuperAdmin.setEnabled(true);
+
+        switch (appUser.getTitle()) {
+            case ROLE_SUPERADMIN:
+                jCheckBoxRoleSuperAdmin.setSelected(true);
+            case ROLE_ADMIN:
+                jCheckBoxRoleAdmin.setSelected(true);
+            case ROLE_USER:
+                jCheckBoxRoleUser.setSelected(true);
+        }
+        switch (appUser.getStatus()) {
+            case ACTIVE:
+                jComboBoxChangeStatusQuick.setSelectedItem("Active");
+                break;
+            case LOCKED:
+                jComboBoxChangeStatusQuick.setSelectedItem("Locked");
+                break;
+            case PENDING:
+                jComboBoxChangeStatusQuick.setSelectedItem("Pending");
+                break;
+        }
+    }
+
+    private void disableQuickButtonsForUser() {
+        jCheckBoxRoleSuperAdmin.setSelected(false);
+        jCheckBoxRoleAdmin.setSelected(false);
+        jCheckBoxRoleUser.setSelected(false);
+        jComboBoxChangeStatusQuick.setEnabled(false);
+        jButtonAddTaskQuick.setEnabled(false);
+        jButtonBanUser.setEnabled(false);
+        jCheckBoxRoleUser.setEnabled(false);
+        jCheckBoxRoleAdmin.setEnabled(false);
+        jCheckBoxRoleSuperAdmin.setEnabled(false);
     }
 
     private void changePaginationPage(PaginationOption operation) {
@@ -834,6 +934,7 @@ public class JPanelUserAll extends javax.swing.JPanel {
         tableModel.changePage(page, offset);
 
         jTextFieldCurrentPage.setText("" + page);
+        disableQuickButtonsForUser();
     }
 
 }

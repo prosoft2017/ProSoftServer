@@ -6,19 +6,23 @@
 package db;
 
 import constant.ConstantMessages;
+import domain.chat.Message;
 import domain.issue.Issue;
+import domain.issue.IssueStatus;
 import domain.user.AppUser;
 import domain.user.StatusType;
 import domain.task.Task;
 import domain.task.TaskStatus;
 import domain.user.Address;
 import domain.user.Country;
+import domain.user.UserTitle;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLType;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -93,20 +97,58 @@ public class DatabaseBroker {
         }
 
         AppUser appUser = (AppUser) obj;
+        try {
+            String sql = "SELECT u.id, u.username, u.password, u.firstname, u.lastname, u.email, u.last_active, u.status, u.baned, u.title, "
+                    + "a.id, a.city, a.postal_code, a.street_name, a.street_number, c.id, c.name "
+                    + "FROM appuser u JOIN address a ON (u.address_id=a.id) JOIN country c ON(c.id=a.country_id) "
+                    + "WHERE u.username ='" + appUser.getUsername() + "' LIMIT 1";
 
-        switch (appUser.getUsername()) {
-            case "fiki":
-            case "admin":
-                return appUser
-                        .setFirstname("Filip")
-                        .setLastname("Admin");
-            default:
-                throw new Exception("Please provide right credintials!!!");
+            Statement sqlStatement = connection.createStatement();
+            ResultSet rs = sqlStatement.executeQuery(sql);
+            boolean hasResult = rs.next();
+            if (!hasResult || !appUser.getPassword().equals(rs.getString("u.password"))) {
+                throw new Exception("Wrong credintials");
+            }
+            Country country = new Country(rs.getInt("c.id"), rs.getString("c.name"));
+            Address address = new Address();
+            address.setId(rs.getInt("a.id"));
+            address.setCountry(country);
+            address.setCity(rs.getString("a.city"));
+            address.setPostalCode(rs.getString("a.postal_code"));
+            address.setStreetNumber(rs.getString("a.street_number"));
+            address.setStreetName(rs.getString("a.street_name"));
+
+            appUser.setId(rs.getInt("u.id"));
+            appUser.setAddress(address);
+            appUser.setUsername(rs.getString("u.username"));
+            appUser.setFirstname(rs.getString("u.firstname"));
+            appUser.setLastname(rs.getString("u.lastname"));
+            appUser.setEmail(rs.getString("u.email"));
+            appUser.setLastActive(rs.getDate("u.last_active").toLocalDate());
+            appUser.setStatus(StatusType.valueOf(rs.getString("u.status")));
+            appUser.setBaned(rs.getBoolean("u.baned"));
+            appUser.setTitle(UserTitle.valueOf(rs.getString("u.title")));
+
+            appUser.setAllTasks(getAllTasksForUser(appUser));
+
+            sqlStatement.close();
+            rs.close();
+
+            updateLastActiveForUser(appUser);
+
+            return appUser;
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            throw ex;
         }
     }
 
     public AppUser saveUser(AppUser appUser) throws SQLException {
         try {
+            if (appUser.getId() != 0) {
+                updateUser(appUser);
+                return appUser;
+            }
             Address address = appUser.getAddress();
 
             saveUserAddress(address);
@@ -115,6 +157,19 @@ public class DatabaseBroker {
             saveUserWithAddress(appUser);
 
             return appUser;
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+
+            throw ex;
+        }
+    }
+
+    public void updateUser(AppUser appUser) throws SQLException {
+        try {
+            Address address = appUser.getAddress();
+
+            updateUserAddress(address);
+            updateUserWithAddress(appUser);
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
 
@@ -133,6 +188,71 @@ public class DatabaseBroker {
             sqlStatment.setDate(4, Date.valueOf(userTask.getEndDate()));
             sqlStatment.setString(5, userTask.getTaskStatus().toString());
             sqlStatment.setInt(6, userTask.getAppUser().getId());
+
+            sqlStatment.executeUpdate();
+            sqlStatment.close();
+            return userTask;
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+
+            throw ex;
+        }
+    }
+
+    public void saveMessage(Message message) throws SQLException {
+        try {
+            String sql = "INSERT INTO message "
+                    + "VALUES (NULL, ?, ?, ?, 1)";
+            PreparedStatement sqlStatment = connection.prepareStatement(sql);
+            sqlStatment.setString(1, message.getMessageContent());
+            sqlStatment.setInt(2, message.getAppUserSender().getId());
+            sqlStatment.setInt(3, message.getAppUserReciver().get(0).getId());
+
+            sqlStatment.executeUpdate();
+            sqlStatment.close();
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+
+            throw ex;
+        }
+    }
+
+    public String getAllMessages(List<AppUser> appUser) throws SQLException {
+        try {
+            String message = "";
+            String sql = "SELECT m.content as content, aps.username "
+                    + "FROM message m "
+                    + "JOIN appuser aps on(aps.id = m.user_sender_id) "
+                    + " WHERE (user_sender_id = ? and user_reciver_id =? ) or (user_sender_id = ? and user_reciver_id = ?)";
+            PreparedStatement sqlStatment = connection.prepareStatement(sql);
+            sqlStatment.setInt(1, appUser.get(0).getId());
+            sqlStatment.setInt(2, appUser.get(1).getId());
+            sqlStatment.setInt(3, appUser.get(1).getId());
+            sqlStatment.setInt(4, appUser.get(0).getId());
+
+            ResultSet rs = sqlStatment.executeQuery();
+            while (rs.next()) {
+                message += System.lineSeparator() + System.lineSeparator() + "@" + rs.getString("aps.username") + ": " + rs.getString("content");
+            }
+            sqlStatment.close();
+            return message;
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+
+            throw ex;
+        }
+    }
+
+    public Task updateUserTask(Task userTask) throws SQLException {
+        try {
+            String sql = "UPDATE task SET title=?, description=?, start_date=?, end_date=?, task_status=? WHERE id=?";
+            PreparedStatement sqlStatment = connection.prepareStatement(sql);
+            sqlStatment.setString(1, userTask.getTitle());
+            sqlStatment.setString(2, userTask.getDescription());
+            sqlStatment.setDate(3, Date.valueOf(userTask.getStartDate()));
+            sqlStatment.setDate(4, Date.valueOf(userTask.getEndDate()));
+            sqlStatment.setString(5, userTask.getTaskStatus().toString());
+            sqlStatment.setInt(6, userTask.getId());
 
             sqlStatment.executeUpdate();
             sqlStatment.close();
@@ -168,62 +288,121 @@ public class DatabaseBroker {
         }
     }
 
-    public Task closeUserTask(Task userTask) {
+    public Task closeUserTask(Task userTask) throws SQLException {
+        try {
+            String sql = "UPDATE task SET task_status = ? WHERE id = ?";
+            PreparedStatement sqlStatment = connection.prepareStatement(sql);
+            sqlStatment.setString(1, TaskStatus.DELETED.toString());
+            sqlStatment.setInt(2, userTask.getId());
 
-        return userTask;
+            sqlStatment.executeUpdate();
+            sqlStatment.close();
+
+            userTask.setTaskStatus(TaskStatus.DELETED);
+            return userTask;
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+
+            throw ex;
+        }
     }
 
-    public List<AppUser> getAllUsers() {
-        List<AppUser> userList = new ArrayList<>();
-        Address a = new Address();
-        Address b = new Address();
-        a.setCountry(new Country(1, "Serbia"));
-        b.setCountry(new Country(2, "France"));
-        userList.add(new AppUser("1", "Pera", "Peric", "qwer@qwer.qwer", StatusType.Active, true, "qwer", "sfas", a));
-        userList.add(new AppUser("2", "Admin", "Adminovic", "lllllllllllllll@qwer.qwer", StatusType.Active, true, "22222", "asfdasd", a));
-        userList.add(new AppUser("3", "gdsfg", "34523", "asdfasd", StatusType.Active, true, "22222", "asdfa222222sd", a));
-        userList.add(new AppUser("4", "gdfg", "asdf2222222asdfa", "asdfsaf@qwer.qwer", StatusType.Pending, false, "22222", "asdfsd", a));
-        userList.add(new AppUser("5", "q22werrtsert22q", "23423", "lllllllllllllll@qwer.qwer", StatusType.Locked, true, "22222", "ewrwq", a));
-        userList.add(new AppUser("6", "s", "asdf2222222asdfa", "dsfgsd@qwer.qwer", StatusType.Active, true, "23423", "234234", a));
-        userList.add(new AppUser("7", "sert", "asdf2222222asdfa", "23d4r43r@qwer.qwer", StatusType.Active, false, "grt", "asdfa222222sd", a));
-        userList.add(new AppUser("8", "q22wgdfger22q", "asdf2222222asdfa", "fsdf@qwer.qwer", StatusType.Locked, true, "1231", "asdfa222222sd", a));
-        userList.add(new AppUser("9", "34", "asdf2222222asdfa", "dsfrs@qwer.qwer", StatusType.Pending, true, "123123", "423", a));
-        userList.add(new AppUser("10", "ewt", "asdf2222222asdfa", "456fd@qwer.qwer", StatusType.Active, true, "22222", "sadfsad", a));
-        userList.add(new AppUser("11", "ew45y64t", "ascf435", "asdcdsafcsdfads@qwer.qwer", StatusType.Active, true, "22222", "sadfsad", a));
-        userList.add(new AppUser("12", "ewt", "asdf2222222asdfa", "12312312@qwer.qwer", StatusType.Active, true, "123123", "sadfsad", a));
-        userList.add(new AppUser("13", "5y7", "768i876u", "456fd@qwer.qwer", StatusType.Active, true, "22222", "sadfsad", a));
-        userList.add(new AppUser("14", "ewt", "ij87ij87", "ascdfdsacf@qwer.qwer", StatusType.Active, true, "22222", "sadfsad", b));
-        userList.add(new AppUser("15", "ewt", "uj67juh", "456fd@qwer.qwer", StatusType.Active, true, "22222", "sadfsad", b));
-        userList.add(new AppUser("16", "45y654", "asdf2222222asdfa", "456fd@qwer.qwer", StatusType.Active, true, "22222", "sadfsad", b));
-        userList.add(new AppUser("17", "45y645y", "uh567hu", "456fd@qwer.qwer", StatusType.Active, true, "22222", "sadfsad", b));
-        userList.add(new AppUser("18", "gdfg", "asdf2222222asdfa", "asdfsaf@qwer.qwer", StatusType.Pending, false, "22222", "asdfsd", b));
-        userList.add(new AppUser("19", "q22werrtsert22q", "23423", "lllllllllllllll@qwer.qwer", StatusType.Locked, true, "22222", "ewrwq", b));
-        userList.add(new AppUser("20", "s", "asdf2222222asdfa", "dsfgsd@qwer.qwer", StatusType.Active, true, "23423", "234234", b));
-        userList.add(new AppUser("21", "sert", "asdf2222222asdfa", "23d4r43r@qwer.qwer", StatusType.Active, false, "grt", "asdfa222222sd", b));
-        userList.add(new AppUser("22", "q22wgdfger22q", "asdf2222222asdfa", "fsdf@qwer.qwer", StatusType.Locked, true, "1231", "asdfa222222sd", b));
-        userList.add(new AppUser("23", "34", "asdf2222222asdfa", "dsfrs@qwer.qwer", StatusType.Pending, true, "123123", "423", b));
-        userList.add(new AppUser("24", "ewt", "asdf2222222asdfa", "456fd@qwer.qwer", StatusType.Active, true, "22222", "sadfsad", a));
-        userList.add(new AppUser("25", "ew45y64t", "ascf435", "asdcdsafcsdfads@qwer.qwer", StatusType.Active, true, "22222", "sadfsad", a));
-        userList.add(new AppUser("26", "ewt", "asdf2222222asdfa", "12312312@qwer.qwer", StatusType.Active, true, "123123", "sadfsad", a));
-        userList.add(new AppUser("27", "5y7", "768i876u", "456fd@qwer.qwer", StatusType.Active, true, "22222", "sadfsad", b));
+    public List<Issue> getAllIssues() throws SQLException {
+        try {
+            List<Issue> issues = new ArrayList<>();
 
-        Task t = new Task();
-        t.setTitle("Task 1");
-        t.setAppUser(userList.get(0));
-        List<Task> listT = new ArrayList<>();
-        listT.add(t);
-        userList.forEach((user) -> {
-            user.setAllTasks(listT);
-            user.setLastActive(LocalDate.now());
-        });
-        return userList;
+            String sql = "SELECT u.id, u.username, u.firstname, u.lastname, u.email, u.last_active, u.status, u.baned, u.title, "
+                    + "i.id as issue_id, i.title, i.description, i.help_text, i.created_at, i.issue_status, i.resolved_at "
+                    + "FROM issue i JOIN appuser u ON (u.id=i.appuser_id)";
+            Statement sqlStatement = connection.createStatement();
+            ResultSet rs = sqlStatement.executeQuery(sql);
+            while (rs.next()) {
+                AppUser appUser = new AppUser();
+                appUser.setId(rs.getInt("u.id"));
+                appUser.setUsername(rs.getString("u.username"));
+                appUser.setFirstname(rs.getString("u.firstname"));
+                appUser.setLastname(rs.getString("u.lastname"));
+                appUser.setEmail(rs.getString("u.email"));
+                appUser.setLastActive(rs.getDate("u.last_active").toLocalDate());
+                appUser.setStatus(StatusType.valueOf(rs.getString("u.status")));
+                appUser.setBaned(rs.getBoolean("u.baned"));
+                appUser.setTitle(UserTitle.valueOf(rs.getString("u.title")));
+
+                Issue issue = new Issue();
+                issue.setId(rs.getInt("issue_id"));
+                issue.setTitle(rs.getString("i.title"));
+                issue.setDescription(rs.getString("i.description"));
+                issue.setHelpText(rs.getString("i.help_text"));
+                issue.setCreatedAt(rs.getDate("i.created_at").toLocalDate());
+                issue.setIssueStatus(IssueStatus.valueOf(rs.getString("i.issue_status")));
+                issue.setAppUser(appUser);
+
+                issues.add(issue);
+            }
+
+            sqlStatement.close();
+            rs.close();
+
+            return issues;
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+
+            throw ex;
+        }
+    }
+
+    public List<AppUser> getAllUsers() throws SQLException {
+        try {
+            List<AppUser> userList = new ArrayList<>();
+
+            String sql = "SELECT u.id, u.username, u.firstname, u.lastname, u.email, u.last_active, u.status, u.baned, u.title, "
+                    + "a.id, a.city, a.postal_code, a.street_name, a.street_number, c.id, c.name "
+                    + "FROM appuser u JOIN address a ON (u.address_id=a.id) JOIN country c ON(c.id=a.country_id)";
+            Statement sqlStatement = connection.createStatement();
+            ResultSet rs = sqlStatement.executeQuery(sql);
+            while (rs.next()) {
+                Country country = new Country(rs.getInt("c.id"), rs.getString("c.name"));
+                Address address = new Address();
+                address.setId(rs.getInt("a.id"));
+                address.setCountry(country);
+                address.setCity(rs.getString("a.city"));
+                address.setPostalCode(rs.getString("a.postal_code"));
+                address.setStreetNumber(rs.getString("a.street_number"));
+                address.setStreetName(rs.getString("a.street_name"));
+
+                AppUser appUser = new AppUser();
+                appUser.setId(rs.getInt("u.id"));
+                appUser.setAddress(address);
+                appUser.setUsername(rs.getString("u.username"));
+                appUser.setFirstname(rs.getString("u.firstname"));
+                appUser.setLastname(rs.getString("u.lastname"));
+                appUser.setEmail(rs.getString("u.email"));
+                appUser.setLastActive(rs.getDate("u.last_active").toLocalDate());
+                appUser.setStatus(StatusType.valueOf(rs.getString("u.status")));
+                appUser.setBaned(rs.getBoolean("u.baned"));
+                appUser.setTitle(UserTitle.valueOf(rs.getString("u.title")));
+
+                appUser.setAllTasks(getAllTasksForUser(appUser));
+
+                userList.add(appUser);
+            }
+
+            sqlStatement.close();
+            rs.close();
+
+            return userList;
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+
+            throw ex;
+        }
     }
 
     public List<Task> getAllTasksForUser(AppUser appUser) throws SQLException {
         try {
             List<Task> taskList = new ArrayList<>();
 
-            String sql = "SELECT * FROM task WHERE appuser_id = 1";
+            String sql = "SELECT * FROM task WHERE appuser_id = " + appUser.getId();
             Statement sqlStatement = connection.createStatement();
             ResultSet rs = sqlStatement.executeQuery(sql);
             while (rs.next()) {
@@ -277,12 +456,27 @@ public class DatabaseBroker {
     }
 
     private void saveUserAddress(Address address) throws SQLException {
-        String sqlAddress = "INSERT INTO address(city, postal_code, street_number, country_id) VALUES (?,?,?,?)";
+        String sqlAddress = "INSERT INTO address(city, postal_code, street_number, street_name,  country_id) VALUES (?,?,?,?, ?)";
         PreparedStatement sqlAddressStatement = connection.prepareStatement(sqlAddress);
         sqlAddressStatement.setString(1, address.getCity());
         sqlAddressStatement.setString(2, address.getPostalCode());
         sqlAddressStatement.setString(3, address.getStreetNumber());
-        sqlAddressStatement.setInt(4, address.getCountry().getId());
+        sqlAddressStatement.setString(4, address.getStreetName());
+        sqlAddressStatement.setInt(5, address.getCountry().getId());
+
+        sqlAddressStatement.executeUpdate();
+        sqlAddressStatement.close();
+    }
+
+    private void updateUserAddress(Address address) throws SQLException {
+        String sqlAddress = "UPDATE address SET city=?, postal_code=?, street_number=?, street_name=?, country_id=? WHERE id=?";
+        PreparedStatement sqlAddressStatement = connection.prepareStatement(sqlAddress);
+        sqlAddressStatement.setString(1, address.getCity());
+        sqlAddressStatement.setString(2, address.getPostalCode());
+        sqlAddressStatement.setString(3, address.getStreetNumber());
+        sqlAddressStatement.setString(4, address.getStreetName());
+        sqlAddressStatement.setInt(5, address.getCountry().getId());
+        sqlAddressStatement.setInt(6, address.getId());
 
         sqlAddressStatement.executeUpdate();
         sqlAddressStatement.close();
@@ -302,8 +496,8 @@ public class DatabaseBroker {
     }
 
     private void saveUserWithAddress(AppUser appUser) throws SQLException {
-        String sql = "INSERT INTO appuser(username, email, firstname, lastname, `status`, baned, image_path, `password`, last_active, address_id) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO appuser(username, email, firstname, lastname, `status`, baned, image_path, `password`, last_active, title, address_id) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement sqlStatment = connection.prepareStatement(sql);
         sqlStatment.setString(1, appUser.getUsername());
         sqlStatment.setString(2, appUser.getEmail());
@@ -314,15 +508,98 @@ public class DatabaseBroker {
         sqlStatment.setString(7, appUser.getImagePath());
         sqlStatment.setString(8, appUser.getPassword());
         sqlStatment.setDate(9, Date.valueOf(appUser.getLastActive()));
-        sqlStatment.setInt(10, appUser.getAddress().getId());
+        sqlStatment.setString(10, appUser.getTitle().toString());
+        sqlStatment.setInt(11, appUser.getAddress().getId());
 
         sqlStatment.executeUpdate();
         sqlStatment.close();
     }
 
-    public boolean banUser(AppUser appUser) {
-        appUser.setBaned(true);
-        
-        return true;
+    private void updateUserWithAddress(AppUser appUser) throws SQLException {
+        String sql = "UPDATE appuser SET email=?, firstname=?, lastname=?, `status`=?, baned=?, image_path=?, last_active=?, address_id=? "
+                + "WHERE id= ?";
+        PreparedStatement sqlStatment = connection.prepareStatement(sql);
+        sqlStatment.setString(1, appUser.getEmail());
+        sqlStatment.setString(2, appUser.getFirstname());
+        sqlStatment.setString(3, appUser.getLastname());
+        sqlStatment.setString(4, appUser.getStatus().toString());
+        sqlStatment.setBoolean(5, appUser.isBaned());
+        sqlStatment.setString(6, appUser.getImagePath());
+        sqlStatment.setDate(7, Date.valueOf(appUser.getLastActive()));
+        sqlStatment.setInt(8, appUser.getAddress().getId());
+        sqlStatment.setInt(9, appUser.getId());
+
+        sqlStatment.executeUpdate();
+        sqlStatment.close();
+    }
+
+    public void reportIssue(Issue issue) throws SQLException {
+        try {
+            String sql = "INSERT INTO issue "
+                    + "VALUES (NULL, ?, ?, ?, ?, ?, NULL, ?)";
+            PreparedStatement sqlStatment = connection.prepareStatement(sql);
+            sqlStatment.setString(1, issue.getTitle());
+            sqlStatment.setString(2, issue.getDescription());
+            sqlStatment.setString(3, issue.getHelpText());
+            sqlStatment.setDate(4, Date.valueOf(issue.getCreatedAt()));
+            sqlStatment.setString(5, issue.getIssueStatus().toString());
+            sqlStatment.setInt(6, issue.getAppUser().getId());
+
+            sqlStatment.executeUpdate();
+            sqlStatment.close();
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            throw ex;
+        }
+    }
+
+    public boolean banUser(AppUser appUser) throws SQLException {
+        try {
+            String sql = "UPDATE appuser SET baned = 1 WHERE id = ?";
+            PreparedStatement sqlStatment = connection.prepareStatement(sql);
+            sqlStatment.setInt(1, appUser.getId());
+
+            sqlStatment.executeUpdate();
+            sqlStatment.close();
+
+            appUser.setBaned(true);
+            return true;
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            throw ex;
+        }
+    }
+
+    public void updateIssues(Issue issue) throws SQLException {
+        try {
+            String sql = "UPDATE issue SET issue_status = '" + issue.getIssueStatus() + "' WHERE id = ?";
+            PreparedStatement sqlStatment = connection.prepareStatement(sql);
+            sqlStatment.setInt(1, issue.getId());
+
+            sqlStatment.executeUpdate();
+            sqlStatment.close();
+        } catch (SQLException ex) {
+            System.out.println("usao");
+            System.out.println(ex.getMessage());
+            throw ex;
+        }
+    }
+
+    private void updateLastActiveForUser(AppUser appUser) throws SQLException {
+        LocalDate lastActive = LocalDate.now();
+        try {
+            String sql = "UPDATE appuser SET last_active = ? WHERE id = ?";
+            PreparedStatement sqlStatment = connection.prepareStatement(sql);
+            sqlStatment.setDate(1, Date.valueOf(lastActive));
+            sqlStatment.setInt(2, appUser.getId());
+
+            sqlStatment.executeUpdate();
+            sqlStatment.close();
+
+            appUser.setLastActive(lastActive);
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            throw ex;
+        }
     }
 }

@@ -5,14 +5,21 @@
  */
 package view;
 
+import controller.UserBackendController;
 import domain.user.AppUser;
 import domain.task.Task;
 import domain.UserCRUDType;
+import domain.user.StatusType;
+import domain.user.UserTitle;
 import java.awt.BorderLayout;
 import java.awt.Dialog;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -29,12 +36,14 @@ import view.user.JPanelBanUser;
 import view.user.JPanelUserAll;
 import view.user.JPanelUserBasicInfoCRUD;
 import view.user.JPanelUserCrud;
+import view.user.issue.JPanelAllIssues;
+import view.user.issue.JPanelIssueDetails;
 
 /**
  *
  * @author Nikola
  */
-public class JFrameStart extends javax.swing.JFrame implements TreeSelectionListener {
+public class JFrameStart extends javax.swing.JFrame implements TreeSelectionListener, Observer {
 
     /**
      * Creates new form JFrameStart
@@ -43,6 +52,7 @@ public class JFrameStart extends javax.swing.JFrame implements TreeSelectionList
         initComponents();
         initTreeComponents();
         initStatusPanels();
+        UserBackendController.getController().addObserver(this);
     }
 
     /**
@@ -110,6 +120,7 @@ public class JFrameStart extends javax.swing.JFrame implements TreeSelectionList
         jMenu2 = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem6 = new javax.swing.JMenuItem();
+        jMenuItem8 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenuItem7 = new javax.swing.JMenuItem();
 
@@ -164,7 +175,7 @@ public class JFrameStart extends javax.swing.JFrame implements TreeSelectionList
         jPanelUserDetailsHolder.setLayout(jPanelUserDetailsHolderLayout);
         jPanelUserDetailsHolderLayout.setHorizontalGroup(
             jPanelUserDetailsHolderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 794, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         jPanelUserDetailsHolderLayout.setVerticalGroup(
             jPanelUserDetailsHolderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -282,7 +293,7 @@ public class JFrameStart extends javax.swing.JFrame implements TreeSelectionList
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addComponent(jLabelNewUsers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         jPanel12.add(jPanel6);
@@ -304,7 +315,7 @@ public class JFrameStart extends javax.swing.JFrame implements TreeSelectionList
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addComponent(jLabelActiveUsers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 25, Short.MAX_VALUE))
+                .addGap(0, 15, Short.MAX_VALUE))
         );
 
         jPanel12.add(jPanel3);
@@ -326,7 +337,7 @@ public class JFrameStart extends javax.swing.JFrame implements TreeSelectionList
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         jPanel12.add(jPanel4);
@@ -348,7 +359,7 @@ public class JFrameStart extends javax.swing.JFrame implements TreeSelectionList
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addComponent(jLabelNewNotifications, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         jPanel12.add(jPanel5);
@@ -360,7 +371,7 @@ public class JFrameStart extends javax.swing.JFrame implements TreeSelectionList
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel12, javax.swing.GroupLayout.DEFAULT_SIZE, 804, Short.MAX_VALUE)
+                    .addComponent(jPanel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanelUserDetailsHolder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -409,6 +420,7 @@ public class JFrameStart extends javax.swing.JFrame implements TreeSelectionList
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resource/image/user-details.png"))); // NOI18N
         jButton1.setToolTipText("See User Detalis");
+        jButton1.setEnabled(false);
         jPanel11.add(jButton1);
 
         jSeparator6.setOrientation(javax.swing.SwingConstants.VERTICAL);
@@ -416,16 +428,21 @@ public class JFrameStart extends javax.swing.JFrame implements TreeSelectionList
         jPanel11.add(jSeparator6);
 
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resource/image/undo-menu-img.png"))); // NOI18N
+        jButton4.setEnabled(false);
         jPanel11.add(jButton4);
 
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resource/image/redo-menu-img.png"))); // NOI18N
+        jButton5.setEnabled(false);
         jPanel11.add(jButton5);
 
         jSeparator7.setOrientation(javax.swing.SwingConstants.VERTICAL);
         jSeparator7.setPreferredSize(new java.awt.Dimension(5, 35));
         jPanel11.add(jSeparator7);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<Default config>", "Customise..." }));
+        jComboBox1.setMaximumSize(new java.awt.Dimension(170, 24));
+        jComboBox1.setMinimumSize(new java.awt.Dimension(170, 24));
+        jComboBox1.setPreferredSize(new java.awt.Dimension(170, 24));
         jPanel11.add(jComboBox1);
 
         getContentPane().add(jPanel11, java.awt.BorderLayout.PAGE_START);
@@ -493,6 +510,14 @@ public class JFrameStart extends javax.swing.JFrame implements TreeSelectionList
         });
         jMenu3.add(jMenuItem6);
 
+        jMenuItem8.setText("All Issues");
+        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem8ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem8);
+
         jMenuBar1.add(jMenu3);
 
         jMenu4.setText("Chat");
@@ -533,7 +558,7 @@ public class JFrameStart extends javax.swing.JFrame implements TreeSelectionList
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         JDialog dialog = new JDialog(this, "General Settings", Dialog.ModalityType.MODELESS);
-        JPanelUserCrud panel = new JPanelUserCrud(null, UserCRUDType.Add);
+        JPanelUserCrud panel = new JPanelUserCrud(null, UserCRUDType.ADD);
         dialog.add(panel);
         dialog.setResizable(false);
         dialog.pack();
@@ -589,11 +614,23 @@ public class JFrameStart extends javax.swing.JFrame implements TreeSelectionList
             return;
         }
 
+        AppUser selectedUser = (AppUser) nodeInfo;
+        if (selectedUser.getStatus() == StatusType.ACTIVE) {
+            JOptionPane.showMessageDialog(this, "User is already activated!", "Promoting User", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         String msg = "You are going to promote user " + nodeInfo;
         int response = JOptionPane.showConfirmDialog(this, msg, "Promoting User", JOptionPane.YES_NO_OPTION);
 
         if (response == JOptionPane.YES_OPTION) {
-            JOptionPane.showMessageDialog(this, "promoted", "Promoted User", JOptionPane.INFORMATION_MESSAGE);
+            try {
+                selectedUser.setStatus(StatusType.ACTIVE);
+                controller.UserBackendController.getController().editAppUser(selectedUser);
+                JOptionPane.showMessageDialog(this, "promoted", "Promoted User", JOptionPane.INFORMATION_MESSAGE);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Error while promoting current user!", constant.ConstantMessages.ERROR_MSG_TITLE, JOptionPane.ERROR_MESSAGE);
+            }
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -601,14 +638,19 @@ public class JFrameStart extends javax.swing.JFrame implements TreeSelectionList
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) jTree1.getLastSelectedPathComponent();
 
         if (node == null) {
-            JOptionPane.showMessageDialog(this, "Please select user to promote to VIP", "Promoting User", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Please select user to promote to ADMIN", "Promoting User", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         Object nodeInfo = node.getUserObject();
 
         if (!(nodeInfo instanceof AppUser)) {
-            JOptionPane.showMessageDialog(this, "Please select user to promote to VIP", "Promoting User", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Please select user to promote to ADMIN", "Promoting User", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        AppUser selectedUser = (AppUser) nodeInfo;
+        if (selectedUser.getTitle() == UserTitle.ROLE_ADMIN) {
+            JOptionPane.showMessageDialog(this, "User already have role admin!", "Promoting User", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -616,7 +658,13 @@ public class JFrameStart extends javax.swing.JFrame implements TreeSelectionList
         int response = JOptionPane.showConfirmDialog(this, msg, "Promoting User", JOptionPane.YES_NO_OPTION);
 
         if (response == JOptionPane.YES_OPTION) {
-            JOptionPane.showMessageDialog(this, "VIP", "Promoted User", JOptionPane.INFORMATION_MESSAGE);
+            try {
+                selectedUser.setTitle(UserTitle.ROLE_ADMIN);
+                controller.UserBackendController.getController().editAppUser(selectedUser);
+                JOptionPane.showMessageDialog(this, "New role: ADMIN", "Promoted User", JOptionPane.INFORMATION_MESSAGE);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Error while promoting current user!", constant.ConstantMessages.ERROR_MSG_TITLE, JOptionPane.ERROR_MESSAGE);
+            }
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -635,26 +683,13 @@ public class JFrameStart extends javax.swing.JFrame implements TreeSelectionList
         AppUser nodeInfo = (AppUser) node.getUserObject();
 
         JDialog dialog = new JDialog(null, "User Details", Dialog.ModalityType.APPLICATION_MODAL);
-        JPanel panel = new JPanelUserCrud(nodeInfo, UserCRUDType.Edit);
+        JPanel panel = new JPanelUserCrud(nodeInfo, UserCRUDType.EDIT);
         dialog.add(panel);
         dialog.setResizable(false);
         dialog.pack();
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
     }//GEN-LAST:event_jMenuItemEditUserActionPerformed
-
-    private void jMenuViewUserActionPerformed(java.awt.event.ActionEvent evt) {                                              
-        DefaultMutableTreeNode node = (DefaultMutableTreeNode) jTree1.getLastSelectedPathComponent();
-        AppUser nodeInfo = (AppUser) node.getUserObject();
-
-        JDialog dialog = new JDialog(null, "User Details", Dialog.ModalityType.APPLICATION_MODAL);
-        JPanel panel = new JPanelUserCrud(nodeInfo, UserCRUDType.View);
-        dialog.add(panel);
-        dialog.setResizable(false);
-        dialog.pack();
-        dialog.setLocationRelativeTo(this);
-        dialog.setVisible(true);
-    }                                             
 
     private void jMenuItemBanUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemBanUserActionPerformed
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) jTree1.getLastSelectedPathComponent();
@@ -674,7 +709,7 @@ public class JFrameStart extends javax.swing.JFrame implements TreeSelectionList
         AppUser nodeInfo = (AppUser) node.getUserObject();
 
         JDialog dialog = new JDialog(null, "User Details", Dialog.ModalityType.APPLICATION_MODAL);
-        JPanel panel = new JPanelUserCrud(nodeInfo, UserCRUDType.View);
+        JPanel panel = new JPanelUserCrud(nodeInfo, UserCRUDType.VIEW);
         dialog.add(panel);
         dialog.setResizable(false);
         dialog.pack();
@@ -689,6 +724,16 @@ public class JFrameStart extends javax.swing.JFrame implements TreeSelectionList
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         closeApplication();
     }//GEN-LAST:event_formWindowClosing
+
+    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+        JDialog dialog = new JDialog(null, "All Issues", Dialog.ModalityType.MODELESS);
+        JPanel panel = new JPanelAllIssues();
+        dialog.add(panel);
+        dialog.setResizable(false);
+        dialog.pack();
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+    }//GEN-LAST:event_jMenuItem8ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -725,6 +770,7 @@ public class JFrameStart extends javax.swing.JFrame implements TreeSelectionList
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
+    private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JMenuItem jMenuItemBanUser;
     private javax.swing.JMenuItem jMenuItemEditUser;
     private javax.swing.JMenuItem jMenuItemView;
@@ -787,6 +833,8 @@ public class JFrameStart extends javax.swing.JFrame implements TreeSelectionList
         try {
             registeredUsers = controller.UserBackendController.getController().getAllUsersFromDB();
         } catch (Exception ex) {
+            System.out.println("usao");
+            System.out.println(ex.getMessage());
         }
 
         registeredUsers.forEach((appUser) -> {
@@ -811,5 +859,10 @@ public class JFrameStart extends javax.swing.JFrame implements TreeSelectionList
         if (response == JOptionPane.YES_OPTION) {
             System.exit(0);
         }
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        initTreeComponents();
     }
 }

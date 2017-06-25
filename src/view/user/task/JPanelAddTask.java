@@ -5,18 +5,26 @@
  */
 package view.user.task;
 
+import constant.ConstantMessages;
+import controller.UserBackendController;
+import domain.UserCRUDType;
 import domain.user.AppUser;
 import domain.task.Task;
 import domain.task.TaskStatus;
+import java.awt.Dialog;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import model.TaskTableModel;
+import model.UserTableModel;
+import view.user.JPanelUserCrud;
 
 /**
  *
@@ -192,6 +200,11 @@ public class JPanelAddTask extends javax.swing.JPanel {
         jButtonEditTask.setMaximumSize(new java.awt.Dimension(100, 25));
         jButtonEditTask.setMinimumSize(new java.awt.Dimension(100, 25));
         jButtonEditTask.setPreferredSize(new java.awt.Dimension(100, 25));
+        jButtonEditTask.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEditTaskActionPerformed(evt);
+            }
+        });
 
         jButtonCloseTask.setText("Close Task");
         jButtonCloseTask.setMaximumSize(new java.awt.Dimension(100, 25));
@@ -277,14 +290,12 @@ public class JPanelAddTask extends javax.swing.JPanel {
         String startDateString = jTextFieldStartDate.getText().trim();
         String endDateString = jTextFieldEndDate.getText().trim();
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
         LocalDate startDate;
         LocalDate endDate;
 
         try {
-            startDate = LocalDate.parse(startDateString, formatter);
-            endDate = LocalDate.parse(endDateString, formatter);
+            startDate = LocalDate.parse(startDateString, controller.Controller.getController().formatter);
+            endDate = LocalDate.parse(endDateString, controller.Controller.getController().formatter);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Please provide correct start and end date for user task!!", constant.ConstantMessages.ERROR_MSG_TITLE, JOptionPane.ERROR_MESSAGE);
             return;
@@ -297,7 +308,7 @@ public class JPanelAddTask extends javax.swing.JPanel {
                     .setStartDate(startDate)
                     .setEndDate(endDate)
                     .setAppUser(appUser)
-                    .setTaskStatus(TaskStatus.Active);
+                    .setTaskStatus(TaskStatus.ACTIVE);
 
             try {
                 controller.UserBackendController.getController().saveUserTask(userTask);
@@ -314,27 +325,54 @@ public class JPanelAddTask extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButtonCloseTaskActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCloseTaskActionPerformed
-        int selectedIndex = jTable1.getSelectedRow();
 
-        if (selectedIndex == -1) {
-            JOptionPane.showMessageDialog(null, "Please selecte a task you wish to close!!", constant.ConstantMessages.ERROR_MSG_TITLE, JOptionPane.ERROR_MESSAGE);
+        int selectedIndex = jTable1.getSelectedRow();
+        if (selectedIndex < 0) {
+            JOptionPane.showMessageDialog(null, "Please select user to manage their tasks!", ConstantMessages.ERROR_MSG_TITLE, JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         TaskTableModel tableModel = (TaskTableModel) jTable1.getModel();
         Task task = tableModel.getTaskAt(selectedIndex);
-
-        try {
-            controller.UserBackendController.getController().closeUserTask(task);
-            tableModel.removeTask(selectedIndex);
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), constant.ConstantMessages.ERROR_MSG_TITLE, JOptionPane.ERROR_MESSAGE);
+        if (task.getTaskStatus() == TaskStatus.DELETED) {
+            JOptionPane.showMessageDialog(null, "Task is already closed", ConstantMessages.ERROR_MSG_TITLE, JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        int response = JOptionPane.showConfirmDialog(null, "Are you sure you want to close this task?", "Closing Task", JOptionPane.YES_NO_OPTION);
+        if (response == JOptionPane.YES_OPTION) {
+            try {
+                UserBackendController.getController().closeUserTask(task);
+                tableModel.fireTableDataChanged();
+                JOptionPane.showMessageDialog(null, "Task status changed!", ConstantMessages.ERROR_MSG_TITLE, JOptionPane.ERROR_MESSAGE);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Error!", ConstantMessages.ERROR_MSG_TITLE, JOptionPane.ERROR_MESSAGE);
+            }
         }
     }//GEN-LAST:event_jButtonCloseTaskActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         SwingUtilities.getWindowAncestor(this).setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButtonEditTaskActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditTaskActionPerformed
+        int selectedIndex = jTable1.getSelectedRow();
+        if (selectedIndex < 0) {
+            JOptionPane.showMessageDialog(null, "Please select user to manage their tasks!", ConstantMessages.ERROR_MSG_TITLE, JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        TaskTableModel tableModel = (TaskTableModel) jTable1.getModel();
+        Task task = tableModel.getTaskAt(selectedIndex);
+
+        JDialog dialog = new JDialog(null, "Edit Task", Dialog.ModalityType.APPLICATION_MODAL);
+        JPanel panel = new JPanelEditTask(task);
+        dialog.add(panel);
+        dialog.setResizable(false);
+        dialog.pack();
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+
+    }//GEN-LAST:event_jButtonEditTaskActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

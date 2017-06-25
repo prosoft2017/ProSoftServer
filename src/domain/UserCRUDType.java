@@ -10,7 +10,7 @@ package domain;
  * @author Nikola
  */
 public enum UserCRUDType {
-    Add,
-    View,
-    Edit;
+    ADD,
+    VIEW,
+    EDIT;
 }

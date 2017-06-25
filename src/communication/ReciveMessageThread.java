@@ -52,6 +52,7 @@ public class ReciveMessageThread extends Thread {
             response.setMesssage(ConstantOperations.SUCCESS_MSG);
 
             for (AppUser appUser : message.getAppUserReciver()) {
+                Controller.getController().saveMessage(message);
                 for (ReciveMessageThread activeUserThread : Communication.activeUsers) {
                     if (appUser.getUsername().equals(activeUserThread.getUser().getUsername())) {
                         sendMessage(response, activeUserThread.getSocket());

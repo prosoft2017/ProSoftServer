@@ -70,15 +70,5 @@ public class TaskTableModel extends AbstractTableModel {
     public Task getTaskAt(int selectedIndex) {
         return taskList.get(selectedIndex);
     }
-    
-    public void removeTask(int row) {
-        taskList.remove(row);
-        fireTableDataChanged();
-    }
-    
-    public void removeTask(Task task) {
-        taskList.remove(task);
-        fireTableDataChanged();
-    }
 
 }

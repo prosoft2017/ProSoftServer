@@ -15,7 +15,10 @@ import transfer.TransferObjectResponse;
 import transfer.TransferObjectRequest;
 import constant.ConstantMessages;
 import controller.Controller;
+import controller.UserBackendController;
+import domain.issue.Issue;
 import domain.user.AppUser;
+import domain.user.Country;
 import java.util.ArrayList;
 
 /**
@@ -64,8 +67,23 @@ public class ClientThread extends Thread {
                         });
                         response.setResult(usersAll);
                         break;
+                    case ConstantOperations.GET_ALL_USERS_FRONTEND:
+                        List<AppUser> usersAll2 = UserBackendController.getController().getAllUsersFromDB();
+                        response.setResult(usersAll2);
+                        break;
+                    case ConstantOperations.GET_ALL_COUNTRIES_FRONTEND:
+                        List<Country> countries = Controller.getController().getAllAvailableCountries();
+                        response.setResult(countries);
+                        break;
                     case ConstantOperations.UPDATE_LOGED_USER:
-
+                        UserBackendController.getController().editAppUser((AppUser) request.getParameter());
+                        break;
+                    case ConstantOperations.REPORT_ISSUE:
+                        Controller.getController().reportIssue((Issue) request.getParameter());
+                        break;
+                    case ConstantOperations.GET_ALL_MESSAGES:
+                        String content = controller.Controller.getController().getAllMessages(messageThread.getUser(), (AppUser) request.getParameter());
+                        response.setResult(content);
                         break;
                     case ConstantOperations.CLIENT_DISCONECTED:
                         clientConnected = false;

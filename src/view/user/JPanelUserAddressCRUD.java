@@ -14,8 +14,10 @@ import domain.UserCRUDType;
 import java.awt.Color;
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -32,8 +34,6 @@ public class JPanelUserAddressCRUD extends javax.swing.JPanel {
     private final AppUser appUser;
     private final UserCRUDType cRUDType;
     private boolean formSubmitetedOnce = false;
-    private final String passwordPaterrn = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
-    private final String emailPaterrn = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}";
     private final JPanelUserCrud parent;
 
     /**
@@ -48,7 +48,7 @@ public class JPanelUserAddressCRUD extends javax.swing.JPanel {
         this.appUser = appUser;
         this.cRUDType = cRUDType;
         this.parent = parent;
-        initCustomCompoents();
+        initCustomComponents();
     }
 
     /**
@@ -61,55 +61,50 @@ public class JPanelUserAddressCRUD extends javax.swing.JPanel {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jTextFieldCountry = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jTextFieldCity = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jTextFieldAddress = new javax.swing.JTextField();
+        jTextFieldPostalCode = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jTextFieldStreetNumber = new javax.swing.JTextField();
         jSeparator1 = new javax.swing.JSeparator();
         jButtonNextStep = new javax.swing.JButton();
         jButtonCancel = new javax.swing.JButton();
-        CountryFieldErrorLabel = new javax.swing.JLabel();
         CityFieldErrorLabel = new javax.swing.JLabel();
-        AddressFieldErrorLabel = new javax.swing.JLabel();
+        PostalCodeFieldErrorLabel = new javax.swing.JLabel();
         StreetNumberFieldErrorLabel = new javax.swing.JLabel();
         jButtonSave = new javax.swing.JButton();
         jButtonBack = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        jTextFieldStreetName = new javax.swing.JTextField();
+        StreetNameFieldErrorLabel = new javax.swing.JLabel();
+        jComboBoxCountry = new javax.swing.JComboBox<>();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder("Border Title Add/Edit/Read"));
 
         jLabel1.setText("Country");
 
-        jTextFieldCountry.setName("FirstNameField"); // NOI18N
-        jTextFieldCountry.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                jTextFieldCountryKeyReleased(evt);
-            }
-        });
-
         jLabel2.setText("City");
 
-        jTextFieldCity.setName("LastnameField"); // NOI18N
+        jTextFieldCity.setName("CityField"); // NOI18N
         jTextFieldCity.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 jTextFieldCityKeyReleased(evt);
             }
         });
 
-        jLabel3.setText("Address");
+        jLabel3.setText("Postal code");
 
-        jTextFieldAddress.setName("UsernameField"); // NOI18N
-        jTextFieldAddress.addKeyListener(new java.awt.event.KeyAdapter() {
+        jTextFieldPostalCode.setName("PostalCodeField"); // NOI18N
+        jTextFieldPostalCode.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                jTextFieldAddressKeyReleased(evt);
+                jTextFieldPostalCodeKeyReleased(evt);
             }
         });
 
         jLabel4.setText("Street Number");
 
-        jTextFieldStreetNumber.setName("EmailField"); // NOI18N
+        jTextFieldStreetNumber.setName("StreetNumberField"); // NOI18N
         jTextFieldStreetNumber.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 jTextFieldStreetNumberKeyReleased(evt);
@@ -137,7 +132,10 @@ public class JPanelUserAddressCRUD extends javax.swing.JPanel {
             }
         });
 
-        AddressFieldErrorLabel.setText(" ");
+        PostalCodeFieldErrorLabel.setText(" ");
+        PostalCodeFieldErrorLabel.setMaximumSize(new java.awt.Dimension(0, 0));
+        PostalCodeFieldErrorLabel.setMinimumSize(new java.awt.Dimension(0, 0));
+        PostalCodeFieldErrorLabel.setPreferredSize(new java.awt.Dimension(0, 0));
 
         jButtonSave.setText("Save User");
         jButtonSave.setMaximumSize(new java.awt.Dimension(100, 25));
@@ -159,6 +157,15 @@ public class JPanelUserAddressCRUD extends javax.swing.JPanel {
             }
         });
 
+        jLabel5.setText("Street Name");
+
+        jTextFieldStreetName.setName("StreetNameField"); // NOI18N
+        jTextFieldStreetName.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextFieldStreetNameKeyReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -166,14 +173,6 @@ public class JPanelUserAddressCRUD extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextFieldStreetNumber)
-                            .addComponent(jTextFieldAddress)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
@@ -181,15 +180,12 @@ public class JPanelUserAddressCRUD extends javax.swing.JPanel {
                         .addGap(49, 49, 49)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jTextFieldCity)
-                            .addComponent(jTextFieldCountry)))
+                            .addComponent(jComboBoxCountry, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addComponent(jSeparator1)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 114, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(StreetNumberFieldErrorLabel, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(AddressFieldErrorLabel, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(CityFieldErrorLabel, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(CountryFieldErrorLabel, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(jButtonCancel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
@@ -197,18 +193,30 @@ public class JPanelUserAddressCRUD extends javax.swing.JPanel {
                                 .addGap(18, 18, 18)
                                 .addComponent(jButtonNextStep, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(jButtonSave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(jButtonSave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(StreetNumberFieldErrorLabel, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(StreetNameFieldErrorLabel, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(PostalCodeFieldErrorLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel3))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTextFieldPostalCode)
+                            .addComponent(jTextFieldStreetNumber)
+                            .addComponent(jTextFieldStreetName))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jTextFieldCountry, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(CountryFieldErrorLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(jComboBoxCountry, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jTextFieldCity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
@@ -217,10 +225,16 @@ public class JPanelUserAddressCRUD extends javax.swing.JPanel {
                 .addGap(17, 17, 17)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextFieldAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldPostalCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(AddressFieldErrorLabel)
-                .addGap(3, 3, 3)
+                .addComponent(PostalCodeFieldErrorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(13, 13, 13)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(jTextFieldStreetName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(5, 5, 5)
+                .addComponent(StreetNameFieldErrorLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(jTextFieldStreetNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -228,7 +242,7 @@ public class JPanelUserAddressCRUD extends javax.swing.JPanel {
                 .addComponent(StreetNumberFieldErrorLabel)
                 .addGap(18, 18, 18)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 285, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 249, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonNextStep, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonCancel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -246,23 +260,17 @@ public class JPanelUserAddressCRUD extends javax.swing.JPanel {
 
     }//GEN-LAST:event_jButtonNextStepActionPerformed
 
-    private void jTextFieldCountryKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldCountryKeyReleased
-        if (formSubmitetedOnce) {
-            validateOneField(jTextFieldCountry);
-        }
-    }//GEN-LAST:event_jTextFieldCountryKeyReleased
-
     private void jTextFieldCityKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldCityKeyReleased
         if (formSubmitetedOnce) {
             validateOneField(jTextFieldCity);
         }
     }//GEN-LAST:event_jTextFieldCityKeyReleased
 
-    private void jTextFieldAddressKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldAddressKeyReleased
+    private void jTextFieldPostalCodeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldPostalCodeKeyReleased
         if (formSubmitetedOnce) {
-            validateOneField(jTextFieldAddress);
+            validateOneField(jTextFieldPostalCode);
         }
-    }//GEN-LAST:event_jTextFieldAddressKeyReleased
+    }//GEN-LAST:event_jTextFieldPostalCodeKeyReleased
 
     private void jTextFieldStreetNumberKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldStreetNumberKeyReleased
         if (formSubmitetedOnce) {
@@ -286,14 +294,17 @@ public class JPanelUserAddressCRUD extends javax.swing.JPanel {
 
         Address address = appUser.getAddress() == null ? new Address() : appUser.getAddress();
 
-        address.setCountry(new Country().setName(jTextFieldCountry.getText().trim()));
+        address.setCountry((Country) jComboBoxCountry.getSelectedItem());
         address.setCity(jTextFieldCity.getText().trim());
-        address.setPostalCode(jTextFieldAddress.getText().trim());
+        address.setPostalCode(jTextFieldPostalCode.getText().trim());
         address.setStreetNumber(jTextFieldStreetNumber.getText().trim());
+        address.setStreetName(jTextFieldStreetName.getText().trim());
+
+        appUser.setAddress(address);
 
         switch (cRUDType) {
-            case Add:
-            case Edit: {
+            case ADD:
+            case EDIT: {
                 try {
                     UserBackendController.getController().saveAppUser(appUser);
                 } catch (Exception ex) {
@@ -314,31 +325,39 @@ public class JPanelUserAddressCRUD extends javax.swing.JPanel {
         parent.goToBasicInfoStep();
     }//GEN-LAST:event_jButtonBackActionPerformed
 
+    private void jTextFieldStreetNameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldStreetNameKeyReleased
+        if (formSubmitetedOnce) {
+            validateOneField(jTextFieldStreetName);
+        }
+    }//GEN-LAST:event_jTextFieldStreetNameKeyReleased
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel AddressFieldErrorLabel;
     private javax.swing.JLabel CityFieldErrorLabel;
-    private javax.swing.JLabel CountryFieldErrorLabel;
+    private javax.swing.JLabel PostalCodeFieldErrorLabel;
+    private javax.swing.JLabel StreetNameFieldErrorLabel;
     private javax.swing.JLabel StreetNumberFieldErrorLabel;
     private javax.swing.JButton jButtonBack;
     private javax.swing.JButton jButtonCancel;
     private javax.swing.JButton jButtonNextStep;
     private javax.swing.JButton jButtonSave;
+    private javax.swing.JComboBox<Country> jComboBoxCountry;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTextField jTextFieldAddress;
     private javax.swing.JTextField jTextFieldCity;
-    private javax.swing.JTextField jTextFieldCountry;
+    private javax.swing.JTextField jTextFieldPostalCode;
+    private javax.swing.JTextField jTextFieldStreetName;
     private javax.swing.JTextField jTextFieldStreetNumber;
     // End of variables declaration//GEN-END:variables
 
     private boolean validateAddress() throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
         boolean formValid = true;
 
-        if (!validateIsEmpty(jTextFieldCountry, jTextFieldCity, jTextFieldAddress, jTextFieldStreetNumber)) {
+        if (!validateIsEmpty(jTextFieldCity, jTextFieldStreetName, jTextFieldPostalCode, jTextFieldStreetNumber)) {
             JOptionPane.showMessageDialog(this, "All fields on form are mentatory!", "Error", JOptionPane.ERROR_MESSAGE);
             return false;
         }
@@ -378,16 +397,25 @@ public class JPanelUserAddressCRUD extends javax.swing.JPanel {
         }
     }
 
-    private void initCustomCompoents() {
+    private void initCustomComponents() {
+        try {
+            List<Country> countryList = controller.Controller.getController().getAllAvailableCountries();
+            for (Country country : countryList) {
+                jComboBoxCountry.addItem(country);
+            }
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
         switch (cRUDType) {
-            case Add:
+            case ADD:
                 break;
-            case View:
+            case VIEW:
                 jButtonSave.setEnabled(false);
-                Arrays.asList(jTextFieldCountry, jTextFieldCity, jTextFieldAddress, jTextFieldStreetNumber)
+                jComboBoxCountry.setEnabled(false);
+                Arrays.asList(jTextFieldCity, jTextFieldStreetName, jTextFieldPostalCode, jTextFieldStreetNumber)
                         .stream()
                         .forEach((field) -> field.setEditable(false));
-            case Edit:
+            case EDIT:
                 formSubmitetedOnce = true;
                 setUpFields();
                 break;
@@ -395,9 +423,12 @@ public class JPanelUserAddressCRUD extends javax.swing.JPanel {
     }
 
     private void setUpFields() {
-        jTextFieldCountry.setText(appUser.getFirstname());
-        jTextFieldCity.setText(appUser.getLastname());
-        jTextFieldAddress.setText(appUser.getUsername());
-        jTextFieldStreetNumber.setText(appUser.getEmail());
+        if (appUser.getAddress().getCountry() != null) {
+            jComboBoxCountry.setSelectedItem(appUser.getAddress().getCountry());
+        }
+        jTextFieldCity.setText(appUser.getAddress().getCity());
+        jTextFieldPostalCode.setText(appUser.getAddress().getPostalCode());
+        jTextFieldStreetName.setText(appUser.getAddress().getStreetName());
+        jTextFieldStreetNumber.setText(appUser.getAddress().getStreetNumber());
     }
 }

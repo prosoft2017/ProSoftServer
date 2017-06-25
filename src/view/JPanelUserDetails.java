@@ -5,11 +5,26 @@
  */
 package view;
 
+import constant.ConstantMessages;
+import controller.UserBackendController;
+import domain.UserCRUDType;
+import domain.task.Task;
+import domain.task.TaskStatus;
 import domain.user.AppUser;
+import java.awt.Dialog;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import model.TaskTableModel;
+import model.UserTableModel;
+import view.user.JPanelUserCrud;
+import view.user.task.JPanelAddTask;
+import view.user.task.JPanelEditTask;
 
 /**
  *
@@ -21,6 +36,7 @@ public class JPanelUserDetails extends javax.swing.JPanel {
 
     /**
      * Creates new form JPanelUserDetails
+     *
      * @param appUser
      */
     public JPanelUserDetails(AppUser appUser) {
@@ -117,28 +133,54 @@ public class JPanelUserDetails extends javax.swing.JPanel {
         jButton1.setMaximumSize(new java.awt.Dimension(110, 25));
         jButton1.setMinimumSize(new java.awt.Dimension(110, 25));
         jButton1.setPreferredSize(new java.awt.Dimension(110, 25));
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Edit Task");
         jButton2.setMaximumSize(new java.awt.Dimension(110, 25));
         jButton2.setMinimumSize(new java.awt.Dimension(110, 25));
         jButton2.setPreferredSize(new java.awt.Dimension(110, 25));
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Close Task");
         jButton3.setMaximumSize(new java.awt.Dimension(110, 25));
         jButton3.setMinimumSize(new java.awt.Dimension(110, 25));
         jButton3.setPreferredSize(new java.awt.Dimension(110, 25));
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton4.setText("Edit User");
         jButton4.setMaximumSize(new java.awt.Dimension(110, 25));
         jButton4.setMinimumSize(new java.awt.Dimension(110, 25));
         jButton4.setPreferredSize(new java.awt.Dimension(110, 25));
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jButton5.setText("See More");
         jButton5.setMaximumSize(new java.awt.Dimension(110, 25));
         jButton5.setMinimumSize(new java.awt.Dimension(110, 25));
         jButton5.setPreferredSize(new java.awt.Dimension(110, 25));
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         jButton6.setText("Change Status");
+        jButton6.setEnabled(false);
         jButton6.setMaximumSize(new java.awt.Dimension(110, 25));
         jButton6.setMinimumSize(new java.awt.Dimension(110, 25));
         jButton6.setPreferredSize(new java.awt.Dimension(110, 25));
@@ -185,7 +227,7 @@ public class JPanelUserDetails extends javax.swing.JPanel {
                                         .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
                                         .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addGap(0, 287, Short.MAX_VALUE)))
+                        .addGap(0, 250, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -234,11 +276,83 @@ public class JPanelUserDetails extends javax.swing.JPanel {
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        JDialog dialog = new JDialog(null, "User Details", Dialog.ModalityType.APPLICATION_MODAL);
+        JPanel panel = new JPanelUserCrud(appUser, UserCRUDType.EDIT);
+        dialog.add(panel);
+        dialog.setResizable(false);
+        dialog.pack();
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        JDialog dialog = new JDialog(null, "User Details", Dialog.ModalityType.APPLICATION_MODAL);
+        JPanel panel = new JPanelUserCrud(appUser, UserCRUDType.VIEW);
+        dialog.add(panel);
+        dialog.setResizable(false);
+        dialog.pack();
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        JDialog dialog = new JDialog(null, "User Details", Dialog.ModalityType.APPLICATION_MODAL);
+        JPanel panel = new JPanelAddTask(appUser);
+        dialog.add(panel);
+        dialog.setResizable(false);
+        dialog.pack();
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        int selectedIndex = jTable1.getSelectedRow();
+        if (selectedIndex < 0) {
+            JOptionPane.showMessageDialog(null, "Please select user to manage their tasks!", ConstantMessages.ERROR_MSG_TITLE, JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        TaskTableModel tableModel = (TaskTableModel) jTable1.getModel();
+        Task task = tableModel.getTaskAt(selectedIndex);
+
+        JDialog dialog = new JDialog(null, "Edit Task", Dialog.ModalityType.APPLICATION_MODAL);
+        JPanel panel = new JPanelEditTask(task);
+        dialog.add(panel);
+        dialog.setResizable(false);
+        dialog.pack();
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        int selectedIndex = jTable1.getSelectedRow();
+        if (selectedIndex < 0) {
+            JOptionPane.showMessageDialog(null, "Please select user to manage their tasks!", ConstantMessages.ERROR_MSG_TITLE, JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        Task task = ((TaskTableModel) jTable1.getModel()).getTaskAt(selectedIndex);
+        if (task.getTaskStatus() == TaskStatus.DELETED) {
+            JOptionPane.showMessageDialog(null, "Task is already closed", ConstantMessages.ERROR_MSG_TITLE, JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        int response = JOptionPane.showConfirmDialog(null, "Are you sure you want to close this task?", "Closing Task", JOptionPane.YES_NO_OPTION);
+        if (response == JOptionPane.YES_OPTION) {
+            try {
+                UserBackendController.getController().closeUserTask(task);
+                ((TaskTableModel) jTable1.getModel()).fireTableDataChanged();
+                JOptionPane.showMessageDialog(null, "Task status changed!", ConstantMessages.ERROR_MSG_TITLE, JOptionPane.ERROR_MESSAGE);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Error!", ConstantMessages.ERROR_MSG_TITLE, JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -277,8 +391,8 @@ public class JPanelUserDetails extends javax.swing.JPanel {
         jLabelStatusInfo.setText(appUser.getStatus().toString());
         Locale eng = Locale.forLanguageTag("en");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE, MMMM dd, yyyy", eng);
-        jLabelLastLoginInfo.setText(appUser.getLastActive() != null ? appUser.getLastActive().format(formatter): "User not active");
-        
+        jLabelLastLoginInfo.setText(appUser.getLastActive() != null ? appUser.getLastActive().format(formatter) : "User not active");
+
         TaskTableModel tableModel = new TaskTableModel(appUser.getAllTasks());
         jTable1.setModel(tableModel);
     }

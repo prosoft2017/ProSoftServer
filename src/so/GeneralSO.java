@@ -7,10 +7,6 @@ package so;
 
 import db.DatabaseBroker;
 
-/**
- *
- * @author student1
- */
 public abstract class GeneralSO {
 
     public final void executeSO(Object obj) throws Exception {
